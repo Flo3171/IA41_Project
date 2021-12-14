@@ -16,7 +16,6 @@ class RobotProblem:
         # Inputs: list containing the coordinate of the empty cell and the cell values
         p,r1,r2,r3,r4,t=s
         
-        
         # ns: next states
         ns=[]
         
@@ -24,6 +23,7 @@ class RobotProblem:
         i=0
 
         for r in robots:
+            r=np.array(r)
             for d in directions:
                 for x in range(256):
                     new_placement=r+d*x
@@ -35,7 +35,7 @@ class RobotProblem:
                         new_robots[i]=new_placement
                         
                         
-                        ns.append([p, new_robots[0], new_robots[1], new_robots[2], new_robots[3],t])
+                        ns.append([p, list(new_robots[0]), list(new_robots[1]), list(new_robots[2]), list(new_robots[3]),t])
                         break
             i=i+1
 
@@ -47,9 +47,9 @@ rp=RobotProblem()
 #initial_state= ---à générer:[Player, Robot1, Robot2, Robot3, Robot4, Target]
 #final_state=   ---à générer:[Player, Robot1, Robot2, Robot3, Robot4, Target] 
 #--ex:
-initial_state=[2,[4,4],[4,12],[12,12],[12,4],[12,15]]
+initial_state=[[2],[4,4],[4,12],[12,12],[12,4],[12,15]]
 #--ex:
-final_state=[2,[4,4],[12,15],[12,12],[12,4],[12,15]]
+final_state=[[2],[4,4],[12,15],[12,12],[12,4],[12,15]]
 
 
 #board= ---à générer:[[[0,1]],[[0,-1],[1,0]],......] ---représenter les 256 cases, chaque case contient la liste des directions bloquées

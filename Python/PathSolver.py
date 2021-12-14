@@ -24,7 +24,7 @@ def BFS(pp,initial_state,final_state,board,occurence_test=True):
     n=0
     while OL:
         e=OL.pop(0)
-        if e.State[e.State[0]]==e.State[5]:             #check final state
+        if e.State[e.State[0][0]]==e.State[5]:             #check final state
             print(getPathFrom(e), 'extending', n, 'nodes')
             break
         else:
