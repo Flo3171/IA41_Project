@@ -40,6 +40,14 @@ class RobotProblem:
             i=i+1
 
         return ns
+    
+def difficulty(x):
+    if x==1:         #1=facile, il y a 8 autres meilleures possibilités
+        return 8
+    elif x==2:       #2=moyen
+        return 4
+    else:           #3=difficile
+        return 2
 
 
 rp=RobotProblem()
@@ -54,6 +62,7 @@ final_state=[[2],[4,4],[12,15],[12,12],[12,4],[12,15]]
 
 #board= ---à générer:[[[0,1]],[[0,-1],[1,0]],......] ---représenter les 256 cases, chaque case contient la liste des directions bloquées
 
+#thSol = difficulty(x) ---x choisi par le joueur en début de partie
 
-BFS(rp,initial_state,final_state,board,occurence_test=False)
-BFS(rp,initial_state,final_state,board)
+Solutions = BFS(rp,initial_state,final_state,board,occurence_test=False,thSol)
+Solutions = BFS(rp,initial_state,final_state,board,thSol)
