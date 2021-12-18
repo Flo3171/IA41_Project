@@ -19,8 +19,9 @@ class Board:
                     #expt the four case in the center because they are not usable
 
                     if (j < 7 or j > 8) or (i < 7 or i > 8):
-                        self._cases[i][j] = Case.Case(Coord.Coord(i, j)
-                        )
+                        self._cases[i][j] = Case.Case(Coord.Coord(i, j))
+                        
+        self._caseDestinationCoord; #à générer sous forme [i,j]
 
     def genreate_board(self):
         #TODO find a way to generate the board used template like in the orginal game or random génration
