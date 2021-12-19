@@ -12,9 +12,10 @@ class Map:
         self._mapScore = 0                      # Less expensive path
         
     
-    def addValue(self,i,j,moveCost):
+    def addValue(self,i,j,moveCost,old_i,old_j,board):
         if self._matrix[i][j] == 0:
             self._matrix[i][j] = moveCost
+            board._cases[i][j]._destination.append(board._cases[old_i][old_j])
         
         
     def addToMap(self,i,j,moveCost,board):
@@ -32,25 +33,25 @@ class Map:
                     nextTo_j=1
                 if new_i_plus>=0 and new_i_plus<=15 and new_j_plus>=0 and new_j_plus<=15:
                     if (board._cases[new_i,new_j]._bot == self._playerBot):
-                        self.addValue(new_i,new_j,moveCost)
+                        self.addValue(new_i,new_j,moveCost,i,j,board)
                         return moveCost
                     elif (board._cases[new_i,new_j]._walls != []) and (board._cases[new_i,new_j]._walls != [d]):
-                        self.addValue(new_i,new_j,moveCost)
+                        self.addValue(new_i,new_j,moveCost,i,j,board)
                         break
                     elif (board._cases[new_i + nextTo_i,new_j + nextTo_j]._bot != None) or (board._cases[new_i - nextTo_i,new_j - nextTo_j]._bot != None):
-                        self.addValue(new_i,new_j,moveCost)
+                        self.addValue(new_i,new_j,moveCost,i,j,board)
                         break
                     elif (board._cases[new_i,new_j]._walls != [d]) or (board._cases[new_i_plus,new_j_plus]._bot != None):
                         break
                 elif new_i==0 or new_i==15 or new_j==0 or new_j==15:
                     if (board._cases[new_i,new_j]._bot == self._playerBot):
-                        self.addValue(new_i,new_j,moveCost)
+                        self.addValue(new_i,new_j,moveCost,i,j,board)
                         return moveCost
                     elif (board._cases[new_i,new_j]._walls != [d]) and (board._cases[new_i,new_j]._bot == None):
-                        self.addValue(new_i,new_j,moveCost)
+                        self.addValue(new_i,new_j,moveCost,i,j,board)
                         break
                     elif (board._cases[new_i + nextTo_i,new_j + nextTo_j]._bot != None) or (board._cases[new_i - nextTo_i,new_j - nextTo_j]._bot != None):
-                        self.addValue(new_i,new_j,moveCost)
+                        self.addValue(new_i,new_j,moveCost,i,j,board)
                         break
         return 0
         

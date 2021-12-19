@@ -21,7 +21,8 @@ class Board:
                     if (j < 7 or j > 8) or (i < 7 or i > 8):
                         self._cases[i][j] = Case.Case(Coord.Coord(i, j))
                         
-        self._caseDestinationCoord; #à générer sous forme [i,j]
+        self._caseDestinationCoord #à générer sous forme [i,j]
+        self._robots = []       #à générer sous forme [r1,r2,r3,r4]
 
     def genreate_board(self):
         #TODO find a way to generate the board used template like in the orginal game or random génration
