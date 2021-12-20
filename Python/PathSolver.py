@@ -69,59 +69,60 @@ class PathSolver:
         newPlayerPos = self.moveCurrentBot(defaultMap)
         defaultScore=defaultMap._mapScore
         for r in self._robots:
-            for d in self._directions:
-                i,j=r._pos
-                new_i=i
-                new_j=j
-                if d=='up':
-                    while(self.checkCaseToStop(new_i,new_j,'up')==False):
-                        new_j-=1
-                    if new_j!=j:
-                        self._testBoard._cases[i][j]._bot = None
-                        self._testBoard._cases[new_i][new_j]._bot = r
-                        newRobots = self.replaceBots(new_i,new_j,r)
-                        testMap = Map(self._playerBot)
-                        testMap.generateMap(self._testBoard)
-                        testScore=testMap._mapScore
-                        defaultScore = self.newChoice(testScore,defaultScore,newRobots)
-                        self._testBoard = self._defaultBoard
-                elif d=='down':
-                    while(self.checkCaseToStop(new_i,new_j,'down')==False):
-                        new_j+=1
-                    if new_j!=j:
-                        self._testBoard._cases[i][j]._bot = None
-                        self._testBoard._cases[new_i][new_j]._bot = r
-                        newRobots = self.replaceBots(new_i,new_j,r)
-                        testMap = Map(self._playerBot)
-                        testMap.generateMap(self._testBoard)
-                        testScore=testMap._mapScore
-                        defaultScore = self.newChoice(testScore,defaultScore,newRobots)
-                        self._testBoard = self._defaultBoard
-                elif d=='left':
-                    while(self.checkCaseToStop(new_i,new_j,'left')==False):
-                        new_i-=1
-                    if new_i!=i:
-                        self._testBoard._cases[i][j]._bot = None
-                        self._testBoard._cases[new_i][new_j]._bot = r
-                        newRobots = self.replaceBots(new_i,new_j,r)
-                        testMap = Map(self._playerBot)
-                        testMap.generateMap(self._testBoard)
-                        testScore=testMap._mapScore
-                        defaultScore = self.newChoice(testScore,defaultScore,newRobots)
-                        self._testBoard = self._defaultBoard
-                elif d=='right':
-                    while(self.checkCaseToStop(new_i,new_j,'right')==False):
-                        new_i+=1
-                    if new_i!=i:
-                        self._testBoard._cases[i][j]._bot = None
-                        self._testBoard._cases[new_i][new_j]._bot = r
-                        newRobots = self.replaceBots(new_i,new_j,r)
-                        testMap = Map(self._playerBot)
-                        testMap.generateMap(self._testBoard)
-                        testScore=testMap._mapScore
-                        defaultScore = self.newChoice(testScore,defaultScore,newRobots)
-                        self._testBoard = self._defaultBoard
-        
+            if r != self._playerBot:
+                for d in self._directions:
+                    i,j=r._pos
+                    new_i=i
+                    new_j=j
+                    if d=='up':
+                        while(self.checkCaseToStop(new_i,new_j,'up')==False):
+                            new_j-=1
+                        if new_j!=j:
+                            self._testBoard._cases[i][j]._bot = None
+                            self._testBoard._cases[new_i][new_j]._bot = r
+                            newRobots = self.replaceBots(new_i,new_j,r)
+                            testMap = Map(self._playerBot)
+                            testMap.generateMap(self._testBoard)
+                            testScore=testMap._mapScore
+                            defaultScore = self.newChoice(testScore,defaultScore,newRobots)
+                            self._testBoard = self._defaultBoard
+                    elif d=='down':
+                        while(self.checkCaseToStop(new_i,new_j,'down')==False):
+                            new_j+=1
+                        if new_j!=j:
+                            self._testBoard._cases[i][j]._bot = None
+                            self._testBoard._cases[new_i][new_j]._bot = r
+                            newRobots = self.replaceBots(new_i,new_j,r)
+                            testMap = Map(self._playerBot)
+                            testMap.generateMap(self._testBoard)
+                            testScore=testMap._mapScore
+                            defaultScore = self.newChoice(testScore,defaultScore,newRobots)
+                            self._testBoard = self._defaultBoard
+                    elif d=='left':
+                        while(self.checkCaseToStop(new_i,new_j,'left')==False):
+                            new_i-=1
+                        if new_i!=i:
+                            self._testBoard._cases[i][j]._bot = None
+                            self._testBoard._cases[new_i][new_j]._bot = r
+                            newRobots = self.replaceBots(new_i,new_j,r)
+                            testMap = Map(self._playerBot)
+                            testMap.generateMap(self._testBoard)
+                            testScore=testMap._mapScore
+                            defaultScore = self.newChoice(testScore,defaultScore,newRobots)
+                            self._testBoard = self._defaultBoard
+                    elif d=='right':
+                        while(self.checkCaseToStop(new_i,new_j,'right')==False):
+                            new_i+=1
+                        if new_i!=i:
+                            self._testBoard._cases[i][j]._bot = None
+                            self._testBoard._cases[new_i][new_j]._bot = r
+                            newRobots = self.replaceBots(new_i,new_j,r)
+                            testMap = Map(self._playerBot)
+                            testMap.generateMap(self._testBoard)
+                            testScore=testMap._mapScore
+                            defaultScore = self.newChoice(testScore,defaultScore,newRobots)
+                            self._testBoard = self._defaultBoard
+            
         i,j=newPlayerPos
         if self._currentBoard._cases[i][j]._bot == self._playerBot:
             self._currentBoard._robots = self.replaceBots(i,j,self._playerBot)
