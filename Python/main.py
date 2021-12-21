@@ -1,10 +1,8 @@
 import Direction
-from tkinter import *
+from Window import Window
 
-window = Tk()
-window.geometry("600x600")
-window.title("Rasend Robot")
-window.resizable(width=False, height=False)
-window.mainloop()
+fen = Window("600x600")
+fen.launch()
+
 
 
