@@ -64,5 +64,5 @@ final_state=[[2],[4,4],[12,15],[12,12],[12,4],[12,15]]
 
 #thSol = difficulty(x) ---x choisi par le joueur en début de partie
 
-Solutions = BFS(rp,initial_state,final_state,board,occurence_test=False,thSol)
-Solutions = BFS(rp,initial_state,final_state,board,thSol)
+#Solutions = BFS(rp,initial_state,final_state,board,occurence_test=False,thSol)
+#Solutions = BFS(rp,initial_state,final_state,board,thSol)

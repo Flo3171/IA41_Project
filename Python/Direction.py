@@ -29,9 +29,9 @@ def get_opposite(direction):
 # use tu return the next direction with à pi/2 clockwise rotation : NORTH -> EAST, SOUTH_EAST -> SOUTH_WEST
 def get_adjacent(direction):
     if direction.value[1] == -1 or direction.value[0] == -1:
-        adjcent = [
+        adjacent = [
             int(math.cos(math.acos(direction.value[0]) - (math.pi / 2))),
-            int(math.sin(math.adin(direction.value[1]) - (math.pi / 2))),
+            int(math.sin(math.asin(direction.value[1]) - (math.pi / 2))),
         ]
     else:
         adjacent = [
@@ -42,3 +42,9 @@ def get_adjacent(direction):
     for dir in Direction:
         if adjacent == dir.value:
             return dir
+
+def get_n_adjacent(direction, rotate):
+    if (rotate == 0):
+        return direction
+    else:
+        return get_n_adjacent(get_adjacent(direction), rotate - 1)
