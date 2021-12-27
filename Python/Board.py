@@ -50,9 +50,9 @@ class Board:
             template = random.randint(0, 15)
 
             while(avaliableQuarter[template % 4] == False):
-                template = random.randint(0, 7)
+                template = random.randint(0, 15)
             
-            avaliableQuarter[template%4] = False
+            avaliableQuarter[template % 4] = False
             print(template)
 
             if (template == 0):
@@ -163,6 +163,111 @@ class Board:
                 self.put_object(Coord.Coord(5, 6), i, GameObject.GameObject.BLUE_BALL, Direction.Direction.NORTH_EAST)
                 self.put_object(Coord.Coord(3, 7), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST)
 
+            elif (template == 8):
+                # template number 8
+                self.put_wall(Coord.Coord(1, 0), Direction.Direction.EAST, i)
+                self.put_wall(Coord.Coord(2, 0), Direction.Direction.WEST, i)
+
+                self.put_wall(Coord.Coord(0, 6), Direction.Direction.SOUTH, i)
+                self.put_wall(Coord.Coord(0, 7), Direction.Direction.NORTH, i)
+
+                self.put_object(Coord.Coord(3, 1), i, GameObject.GameObject.GREEN_BEACON, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(6, 3), i, GameObject.GameObject.YELLOW_COIN, Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(1, 4), i, GameObject.GameObject.RED_BALL, Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(4, 6), i, GameObject.GameObject.BLUE_RING, Direction.Direction.NORTH_EAST)
+
+            elif (template == 9):
+                # template number 9
+                self.put_wall(Coord.Coord(5, 0), Direction.Direction.EAST, i)
+                self.put_wall(Coord.Coord(6, 0), Direction.Direction.WEST, i)
+
+                self.put_wall(Coord.Coord(0, 3), Direction.Direction.SOUTH, i)
+                self.put_wall(Coord.Coord(0, 4), Direction.Direction.NORTH, i)
+
+                self.put_object(Coord.Coord(3, 2), i, GameObject.GameObject.YELLOW_BALL, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(5, 3), i, GameObject.GameObject.BLUE_BEACON, Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.RED_RING, Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(4, 5), i, GameObject.GameObject.GREEN_COIN, Direction.Direction.SOUTH_WEST)
+            
+            elif (template == 10):
+                # template number 10
+                self.put_wall(Coord.Coord(1, 0), Direction.Direction.EAST, i)
+                self.put_wall(Coord.Coord(2, 0), Direction.Direction.WEST, i)
+
+                self.put_wall(Coord.Coord(0, 5), Direction.Direction.SOUTH, i)
+                self.put_wall(Coord.Coord(0, 6), Direction.Direction.NORTH, i)
+
+                self.put_object(Coord.Coord(4, 1), i, GameObject.GameObject.GREEN_BALL, Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.RED_BEACON, Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(5, 5), i, GameObject.GameObject.YELLOW_RING, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.BLUE_COIN, Direction.Direction.SOUTH_EAST)
+
+            elif (template == 11):
+                # template number 11
+                self.put_wall(Coord.Coord(2, 0), Direction.Direction.EAST, i)
+                self.put_wall(Coord.Coord(3, 0), Direction.Direction.WEST, i)
+
+                self.put_wall(Coord.Coord(0, 3), Direction.Direction.SOUTH, i)
+                self.put_wall(Coord.Coord(0, 4), Direction.Direction.NORTH, i)
+
+                self.put_object(Coord.Coord(5, 1), i, GameObject.GameObject.BLUE_BALL, Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(3, 4), i, GameObject.GameObject.RED_COIN, Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(6, 5), i, GameObject.GameObject.GREEN_RING, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.YELLOW_BEACON, Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(7, 1), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_WEST)
+
+            elif (template == 12):
+                # template number 12
+                self.put_wall(Coord.Coord(5, 0), Direction.Direction.EAST, i)
+                self.put_wall(Coord.Coord(6, 0), Direction.Direction.WEST, i)
+
+                self.put_wall(Coord.Coord(0, 5), Direction.Direction.SOUTH, i)
+                self.put_wall(Coord.Coord(0, 6), Direction.Direction.NORTH, i)
+
+                self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.RED_BALL, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_COIN, Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(2, 6), i, GameObject.GameObject.GREEN_BEACON, Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.BLUE_RING, Direction.Direction.SOUTH_WEST)
+
+            elif (template == 13):
+                # template number 13
+                self.put_wall(Coord.Coord(2, 0), Direction.Direction.EAST, i)
+                self.put_wall(Coord.Coord(3, 0), Direction.Direction.WEST, i)
+
+                self.put_wall(Coord.Coord(0, 6), Direction.Direction.SOUTH, i)
+                self.put_wall(Coord.Coord(0, 7), Direction.Direction.NORTH, i)
+
+                self.put_object(Coord.Coord(5, 2), i, GameObject.GameObject.GREEN_COIN, Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.YELLOW_BALL, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(1, 5), i, GameObject.GameObject.RED_RING, Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(4, 7), i, GameObject.GameObject.BLUE_BEACON, Direction.Direction.NORTH_EAST)
+
+            elif (template == 14):
+                # template number 14
+                self.put_wall(Coord.Coord(4, 0), Direction.Direction.EAST, i)
+                self.put_wall(Coord.Coord(5, 0), Direction.Direction.WEST, i)
+
+                self.put_wall(Coord.Coord(0, 2), Direction.Direction.SOUTH, i)
+                self.put_wall(Coord.Coord(0, 3), Direction.Direction.NORTH, i)
+
+                self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.BLUE_COIN, Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.GREEN_BALL, Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(3, 4), i, GameObject.GameObject.RED_BEACON, Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(5, 6), i, GameObject.GameObject.YELLOW_RING, Direction.Direction.NORTH_WEST)
+
+            elif (template == 15):
+                # template number 15
+                self.put_wall(Coord.Coord(4, 0), Direction.Direction.EAST, i)
+                self.put_wall(Coord.Coord(5, 0), Direction.Direction.WEST, i)
+
+                self.put_wall(Coord.Coord(0, 6), Direction.Direction.SOUTH, i)
+                self.put_wall(Coord.Coord(0, 7), Direction.Direction.NORTH, i)
+
+                self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.YELLOW_BEACON, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(2, 3), i, GameObject.GameObject.BLUE_BALL, Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(3, 3), i, GameObject.GameObject.GREEN_RING, Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(1, 5), i, GameObject.GameObject.RED_COIN, Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(5, 7), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST)
 
             
 
