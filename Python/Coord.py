@@ -48,8 +48,8 @@ class Coord:
         xB = xA*cos - yA*sin
         yB = yA*cos + xA* sin
 
-        xC = xB + 7.5
-        yC = 7.5 - yB 
+        xC = int(xB + 7.5)
+        yC = int(7.5 - yB)
 
 
         return Coord(xC, yC)

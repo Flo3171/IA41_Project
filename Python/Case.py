@@ -27,7 +27,10 @@ class Case:
             return True
 
     @property
-    def walls(self, wall):
+    def walls(self):
+        return self._walls
+
+    def add_wall(self, wall):
         self._walls.append(wall)
 
     def has_walls(self):
@@ -42,6 +45,8 @@ class Case:
                 return True
         
         return False
+
+        
 
     @property
     def bot(self):
@@ -68,3 +73,5 @@ class Case:
 
     def remove_bot(self):
         self._bot
+
+    
