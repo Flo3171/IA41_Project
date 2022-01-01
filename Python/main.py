@@ -12,3 +12,4 @@ from Window import Window
 
 b = Board.Board()
 b.genreate_board()
+

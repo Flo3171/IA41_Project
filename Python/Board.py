@@ -52,7 +52,6 @@ class Board:
                 template = random.randint(0, 15)
             
             avaliableQuarter[template % 4] = False
-            print(template)
 
             if (template == 0):
                 #template number 0
@@ -282,7 +281,6 @@ class Board:
             robot = Robot.Robot(colors[i], Coord.Coord(coordX, coordY))
             self._robots.append(robot)
             boardCase.place_bot(robot)
-            print(Coord.Coord(coordX, coordY))
         
     # Methods to compute for each case the cases on which we can go in one move
     def next_states(self, x, y):
@@ -351,3 +349,73 @@ class Board:
 
             self.put_wall(Coord.Coord(coord.x - 1, coord.y), Direction.Direction.EAST, rotation)
             self.put_wall(coord, Direction.Direction.WEST, rotation)
+
+    # Method that check in a radius of one arround de given coordinates if their is an other object
+    def is_nearby(self, x, y):
+        y_test = y - 1
+        for i in range(3):
+            x_test = x - 1
+            for j in range(3):
+                if (
+                    self._cases[x_test][y_test].has_game_object()
+                    or x_test == 7
+                    or x_test == 8
+                    or y_test == 7
+                    or y_test == 8
+                ):
+                    return True
+                x_test += 1
+            y_test += 1
+        return False
+
+    # Method to move a bot by giving it color and the new coord
+    def move_bot(self, color, coord):
+        for i in range(16):
+            for j in range(16):
+                if self._cases[i][j].has_bot():
+                    if self._cases[i][j].bot.color == color:
+                        robot = self._cases[i][j].bot
+                        self._cases[i][j].bot.move(coord)
+                        self._cases[coord.x][coord.y].place_bot(robot)
+                        self._cases[i][j].remove_bot()
+                        break
+            else:
+                continue
+            break
+
+    # Method to remove an object of the board at the end of the round
+    def remove_object(self, object):
+        for i in range(16):
+            for j in range(16):
+                if self._cases[i][j].has_game_object():
+                    if self._cases[i][j].game_object == object:
+                        self._cases[i][j].remove_game_object()
+
+    # Method to replace the moved bots to their start position
+    def reset_bot(self):
+        for i in range(16):
+            for j in range(16):
+                if self._cases[i][j].has_bot():
+                    robot = self._cases[i][j].bot
+                    if (
+                        robot.pos.x != robot.startPos.x
+                        or robot.pos.y != robot.startPos.y
+                    ):
+                        robot.reset_pos()
+                        self._cases[robot.startPos.x][robot.startPos.y].place_bot(robot)
+                        self._cases[i][j].remove_bot()
+
+    # Method to update board model, to re-compute the destination possible for each case after a robot moves
+    def update(self):
+        for j in range(16):
+            for i in range(16):
+                self._cases[i][j].reset_destinations()
+                if (j < 7 or j > 8) or (i < 7 or i > 8):
+                    destinations = self.link_case(i, j)
+                    for d in destinations:
+                        self._cases[i][j].add_destination(d)
+
+    @property
+    def cases(self):
+        return self._cases
+
