@@ -13,12 +13,11 @@ class Board:
     def __init__(self):
         # init the board
         self._cases = [[Case.Case(Coord.Coord(j, i)) for i in range(16)] for j in range(16)]
-                        
+
+        self._robots = []
         #self._caseDestinationCoord #à générer sous forme [i,j]
-        #self._robots = []       #à générer sous forme [r1,r2,r3,r4]
 
     def genreate_board(self):
-        #TODO find a way to generate the board used template like in the orginal game or random génration
 
         for j in range(16):
 
@@ -268,6 +267,50 @@ class Board:
                 self.put_object(Coord.Coord(3, 3), i, GameObject.GameObject.GREEN_RING, Direction.Direction.SOUTH_WEST)
                 self.put_object(Coord.Coord(1, 5), i, GameObject.GameObject.RED_COIN, Direction.Direction.SOUTH_EAST)
                 self.put_object(Coord.Coord(5, 7), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST)
+
+        # create and set the position of the robot
+
+        colors = ["Blue", "Green", "Red", "Yellow"]
+        for i in range(4):
+            coordX = random.randint(0, 15)
+            coordY = random.randint(0, 15)
+            boardCase = self._cases[coordX][coordY]
+            while (((coordX > 6 and coordX < 9) and (coordY > 6 and coordY < 9 )) or boardCase.has_game_object() or boardCase.has_bot()):
+                coordX = random.randint(0, 15)
+                coordY = random.randint(0, 15)
+                boardCase = self._cases[coordX][coordY]
+            robot = Robot.Robot(colors[i], Coord.Coord(coordX, coordY))
+            self._robots.append(robot)
+            boardCase.place_bot(robot)
+            print(Coord.Coord(coordX, coordY))
+        
+    # Methods to compute for each case the cases on which we can go in one move
+    def next_states(self, x, y):
+        directions = [
+            Direction.Direction.NORTH,
+            Direction.Direction.EAST,
+            Direction.Direction.SOUTH,
+            Direction.Direction.WEST,
+        ]
+        can_go = []
+
+        for dir in directions:
+            actual_x = x
+            actual_y = y
+            # While the actual case has no wall in the direction we follow
+            while not self._cases[actual_x][actual_y].has_walls_in_dir(dir):
+                # If the next case has a bot, we stop
+                if (self._cases[actual_x + Direction.get_x(dir)][actual_y + Direction.get_y(dir)].has_bot):
+                    break
+                # If their is no obstactle, we increase the test coordinates and we loop
+                actual_x += Direction.get_x(dir)
+                actual_y += Direction.get_y(dir)
+
+            # When we exit the loop, we create a new destination with the last test coordinates
+            can_go.append(Destination.Destination(dir, self._cases[actual_x][actual_y]))
+
+        return can_go
+
 
             
 

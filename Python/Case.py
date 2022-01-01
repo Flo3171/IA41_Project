@@ -12,7 +12,7 @@ class Case:
 
     @property
     def game_object(self):
-        return self.gameObject
+        return self._gameObject
 
     def add_game_object(self, obj):
         self._gameObject = obj
@@ -21,10 +21,8 @@ class Case:
         self._gameObject = None
     
     def has_game_object(self):
-        if self._gameObject == None:
-            return False
-        else:
-            return True
+        return self._gameObject != None
+            
 
     @property
     def walls(self):
@@ -53,10 +51,7 @@ class Case:
         return self._bot
 
     def has_bot(self):
-        if self._bot == None:
-            return False
-        else: 
-            return True
+        return self._bot != None
     
     @property
     def destination(self):
