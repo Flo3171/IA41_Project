@@ -12,6 +12,15 @@ canvas.place(x=0, y=0)
 canvas2 = Canvas(_window,bg = "brown")
 canvas2.place(x=16*img_size+300+decal, y=0 , anchor = "ne",width=300,height=16*img_size+decal)
 
+BNorth = Button(canvas2,text="NORTH",bg ="purple")
+BSouth  = Button(canvas2,text="SOUTH",bg ="purple")
+BEast = Button(canvas2,text="EAST",bg ="purple")
+BWest = Button(canvas2,text="WEST",bg ="purple")
+BRed = Button(canvas2,text="",bg ="red", width=5)
+BBlue = Button(canvas2,text="",bg ="blue", width=5)
+BGreen = Button(canvas2,text="",bg ="green", width=5)
+BYellow = Button(canvas2,text="",bg ="yellow", width=5)
+
 
 IMG_cell = PhotoImage ( file = "files/board/CaseX38.png" )
 IMG_H_Wall = PhotoImage ( file = "files/board/VWallX38.png" )
@@ -96,6 +105,18 @@ class Window:
         _window.geometry(str(16*img_size+300+decal)+"x"+str(16*img_size+decal))
         _window.resizable(width=False, height=False)
         canvas.config(width=16*img_size+(decal*2), height=16*img_size+(decal*2))
+        BNorth.place(x =150 , y = 80, anchor= "center")
+        BSouth.place(x =150 , y = 160, anchor= "center")
+        BEast.place(x =200 , y = 120, anchor= "center")
+        BWest.place(x =100 , y = 120, anchor= "center")
+        BRed.place(x =40 , y = 200, anchor= "center")
+        BBlue.place(x =110 , y = 200, anchor= "center")
+        BGreen.place(x =180 , y = 200, anchor= "center")
+        BYellow.place(x =250 , y = 200, anchor= "center")
+
+
+
+
 
 
 
