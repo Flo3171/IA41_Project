@@ -4,6 +4,8 @@ import PathSolver as ps
 from Window import Window
 from tkinter import *
 import GameObject
+import Coord
+import Direction
 
 fen = Window()
 
