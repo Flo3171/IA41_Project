@@ -397,7 +397,7 @@ class Board:
             # While the actual case has no wall in the direction we follow
             while not self._cases[actual_x][actual_y].has_walls_in_dir(dir):
                 # If the next case has a bot, we stop
-                if (
+                if (self.case(actual_x, actual_y).has_walls_in_dir(dir) and
                         self._cases[actual_x + Direction.get_x(dir)][
                             actual_y + Direction.get_y(dir)
                         ].bot

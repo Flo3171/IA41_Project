@@ -1,6 +1,7 @@
 from tkinter import *
 import Direction
 import GameObject
+import Board
 
 img_size = 38
 decal = 0
@@ -67,8 +68,8 @@ class Window:
         BGreen.place(x=180 , y=200, anchor= "center")
         BYellow.place(x=250 , y=200, anchor= "center")
 
-    def __init__(self,board):
-        self._board = board
+    def __init__(self):
+        self._board = Board.Board()
         self._board.generate_board()
         _window.geometry(str(16*img_size+300+decal)+"x"+str(16*img_size+decal))
         _window.resizable(width=False, height=False)
@@ -96,7 +97,7 @@ class Window:
     def draw_board(self):
         for i in range(16):
             for j in range(16):
-                Window.place_cell(i,j)
+                Window.place_cell(i, j)
         for i in range(16):
             for j in range(16):
                 Window.place_wall(i, j, self._board.case(i, j))
@@ -207,6 +208,14 @@ class Window:
     def pick_Y(self):
         self._color = "Yellow"
 
+    def solve(self):
+        ia = ps.PathSolver(None, None, b)
+        ia.choose_next_state()
+        state = ia
+        while state != None:
+            fen.draw_board(state.board())
+            state = state._nextState
+
 
     def button_config(self):
         BNorth.config(command=self.move_N)
@@ -214,3 +223,4 @@ class Window:
         BBlue.config(command=self.pick_B)
         BGreen.config(command=self.pick_G)
         BYellow.config(command=self.pick_Y)
+

@@ -6,24 +6,15 @@ import GameObject
 import Coord
 import Direction
 
-b = Board.Board()
-fen = Window(b)
+fen = Window()
 fen.draw_board()
 fen.launch()
 
-ia = ps.PathSolver(None, None, b)
-ia.choose_next_state()
-state = ia
-while state != None:
-    fen.draw_board(state.board())
-    state = state._nextState
+
+
+
 
 """
-
-
-
-
-
 TKI_Principal = Tk ( )
 
 IMG_Image = PhotoImage ( file = "files/board/Case.png" )
