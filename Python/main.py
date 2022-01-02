@@ -7,7 +7,7 @@ from tkinter import *
 fen = Window()
 
 b = Board.Board()
-b.genreate_board()
+b.generate_board()
 fen.draw_board(b)
 fen.launch()
 

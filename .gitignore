@@ -1,2 +1,14 @@
 .vscode
 Python/__pycache__/Window.cpython-310.pyc
+.idea/IA41_Project.iml
+.idea/IA41_Project.iml
+.idea/misc.xml
+Python/__pycache__/Board.cpython-310.pyc
+Python/__pycache__/Case.cpython-310.pyc
+Python/__pycache__/Coord.cpython-310.pyc
+Python/__pycache__/Destination.cpython-310.pyc
+Python/__pycache__/Direction.cpython-310.pyc
+Python/__pycache__/Game.cpython-310.pyc
+Python/__pycache__/Robot.cpython-310.pyc
+Python/__pycache__/Wall.cpython-310.pyc
+Python/__pycache__/Window.cpython-310.pyc
