@@ -1,5 +1,6 @@
 import Board
 import Game
+import PathSolver as ps
 from Window import Window
 from tkinter import *
 import GameObject
@@ -10,6 +11,15 @@ b = Board.Board()
 b.generate_board()
 fen.draw_board(b)
 fen.launch()
+
+ia=ps.PathSolver(None,None,b)
+ia.choose_next_state()
+state=ia
+while state != None:
+    fen.draw_board(state.board())
+    state = state._nextState
+    
+
 
 
 
