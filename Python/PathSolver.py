@@ -25,6 +25,10 @@ class PathSolver:
     @property
     def player_bot(self):
         return self._playerBot
+    
+    @property
+    def board(self):
+        return self._currentBoard
 
     def check_case_to_stop(self, i, j, d):
         if d == 'up':
@@ -99,7 +103,7 @@ class PathSolver:
                     new_i = i
                     new_j = j
                     if d == 'up':
-                        while self.check_case_to_stop(new_i, new_j, 'up') is False:
+                        while not self.check_case_to_stop(new_i, new_j, 'up'):
                             new_j -= 1
                         if new_j != j:
                             self._testBoard.case(i, j).remove_bot()
