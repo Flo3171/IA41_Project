@@ -21,6 +21,15 @@ BBlue = Button(canvas2,text="",bg ="blue", width=5)
 BGreen = Button(canvas2,text="",bg ="green", width=5)
 BYellow = Button(canvas2,text="",bg ="yellow", width=5)
 
+IMG_R_robot = PhotoImage ( file = "files/robots/RedRobot.png" )
+IMG_B_robot = PhotoImage ( file = "files/robots/BlueRobot.png" )
+IMG_G_robot = PhotoImage ( file = "files/robots/GreenRobot.png" )
+IMG_Y_robot = PhotoImage ( file = "files/robots/YellowRobot.png" )
+
+"""R_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_R_robot , anchor = "center" )
+B_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_B_robot , anchor = "center" )
+G_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_G_robot , anchor = "center" )
+Y_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_Y_robot , anchor = "center" )"""
 
 IMG_cell = PhotoImage ( file = "files/board/CaseX38.png" )
 IMG_H_Wall = PhotoImage ( file = "files/board/VWallX38.png" )
@@ -55,6 +64,16 @@ def place_wall(x, y, case):
         CAN_Zone_Image = canvas.create_image (x*img_size -4, y*img_size , image = IMG_V_Wall , anchor = "nw" )
     if case.has_walls_in_dir(Direction.Direction.EAST):
         CAN_Zone_Image = canvas.create_image (x*img_size +33, y*img_size , image = IMG_V_Wall , anchor = "nw" )
+
+def place_robot(x, y, case):
+    if case.bot().color() == "Red":
+        R_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_R_robot , anchor = "center" )
+    if case.bot().color() == "Blue":
+        B_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_B_robot , anchor = "center" )
+    if case.bot().color() == "Green":
+        G_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_G_robot , anchor = "center" )
+    if case.bot().color() == "Yellow":
+        Y_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_Y_robot , anchor = "center" )
 
 def place_objective(x, y,case):
     if case.game_object()==GameObject.GameObject.VORTEX:
@@ -99,7 +118,14 @@ class Window:
         _window.geometry(str(height)+"x"+str(width))
         _window.resizable(width=False, height=False)
         canvas.config(width=width, height=height)
-
+        BNorth.place(x =150 , y = 80, anchor= "center")
+        BSouth.place(x =150 , y = 160, anchor= "center")
+        BEast.place(x =200 , y = 120, anchor= "center")
+        BWest.place(x =100 , y = 120, anchor= "center")
+        BRed.place(x =40 , y = 200, anchor= "center")
+        BBlue.place(x =110 , y = 200, anchor= "center")
+        BGreen.place(x =180 , y = 200, anchor= "center")
+        BYellow.place(x =250 , y = 200, anchor= "center")
 
     def __init__(self):
         _window.geometry(str(16*img_size+300+decal)+"x"+str(16*img_size+decal))
@@ -113,10 +139,6 @@ class Window:
         BBlue.place(x =110 , y = 200, anchor= "center")
         BGreen.place(x =180 , y = 200, anchor= "center")
         BYellow.place(x =250 , y = 200, anchor= "center")
-
-
-
-
 
 
 
@@ -137,6 +159,8 @@ class Window:
             for j in range(16):
                 if board.case( i, j).has_game_object():
                     place_objective(i,j,board.case( i, j))
+                if board.case(i,j).has_bot():
+                    place_robot(i,j,board.case( i, j))
 
 
 

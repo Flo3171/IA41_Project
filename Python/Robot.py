@@ -7,7 +7,7 @@ class Robot:
     def __eq__(self, other):
         return self._color == other.color() and self._pos == other.pos() and self._startPos == other.startPos()
 
-    @property
+
     def color(self):
         return self._color
 
