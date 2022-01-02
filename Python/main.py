@@ -2,7 +2,7 @@ import Board
 import Game
 from Window import Window
 from tkinter import *
-
+import GameObject
 
 fen = Window()
 
