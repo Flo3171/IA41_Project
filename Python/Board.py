@@ -6,6 +6,7 @@ import GameObject
 import Robot
 import Destination
 import random
+import Objective
 
 
 class Board:
@@ -13,9 +14,11 @@ class Board:
     def __init__(self):
         # init the board
         self._cases = [[Case.Case(Coord.Coord(j, i)) for i in range(16)] for j in range(16)]
-
         self._robots = []
-        # self._caseDestinationCoord #à générer sous forme [i,j]
+        self._objective = None
+
+    def cases(self, i, j):
+        return self._cases[i][j]
 
     def generate_board(self):
 
@@ -288,6 +291,26 @@ class Board:
             self._robots.append(robot)
             board_case.place_bot(robot)
 
+        # set the objective to reach with the robot
+        game_object = random.choice(GameObject.Enum)
+        while game_object == GameObject.GameObject.VORTEX:
+            game_object = random.choice(GameObject.Enum)
+
+        coord = self.find_game_object(game_object)
+        self._objective = Objective.Objective(coord, game_object)
+        print(self._objective.coord(), self.objective.game_object())
+
+    def find_game_object(self, game_object):
+        for i in range(16):
+            for j in range(16):
+                if self._cases[i][j].game_object() == game_object:
+                    return Coord.Coord(j, i)
+        return None
+
+    @property
+    def objective(self):
+        return self._objective
+
     # Methods to compute for each case the cases on which we can go in one move
     def next_states(self, x, y):
         directions = [
@@ -410,3 +433,7 @@ class Board:
     @property
     def cases(self):
         return self._cases
+
+    @property
+    def robots(self):
+        return self._robots

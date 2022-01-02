@@ -3,9 +3,9 @@ class Robot:
         self._color = color
         self._pos = start_pos
         self._startPos = start_pos
-        
-    def __eq__(self,other):
-        return self._color==other._color and self._pos==other._pos and self._startPos==other._startPos
+
+    def __eq__(self, other):
+        return self._color == other.color() and self._pos == other.pos() and self._startPos == other.startPos()
 
     @property
     def color(self):
@@ -18,10 +18,6 @@ class Robot:
     @property
     def pos(self):
         return self._pos
-
-    @property
-    def image(self):
-        return self._image
 
     def move(self, coord):
         self._pos = coord

@@ -1,5 +1,6 @@
 from tkinter import *
 
+
 class Window:
 
     def __init__(self, t):
@@ -17,5 +18,5 @@ class Window:
     def launch(self):
         self.window.mainloop()
 
-    def setsize(self,height,width):
-        self.window.geometry(str(height)+"x"+str(width))
+    def setsize(self, height, width):
+        self.window.geometry(str(height) + "x" + str(width))
