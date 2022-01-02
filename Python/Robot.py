@@ -12,7 +12,7 @@ class Robot:
     def start_pos(self):
         return self._startPos
 
-    @property
+
     def pos(self):
         return self._pos
 

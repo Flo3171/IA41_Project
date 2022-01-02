@@ -1,5 +1,4 @@
 import Board
-import Game
 import PathSolver as ps
 from Window import Window
 from tkinter import *

@@ -52,8 +52,14 @@ class Case:
         return self._bot is not None
 
     @property
-    def destination(self):
+    def destinations(self):
         return self._destination
+
+    def destination(self, direction):
+        print(len(self._destination))
+        for i in range(len(self._destination)):
+            if self._destination[i].direction == direction:
+                return self._destination[i]
 
     def add_destination(self, destination):
         self._destination.append(destination)

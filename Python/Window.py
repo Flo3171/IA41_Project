@@ -74,7 +74,7 @@ class Window:
         _window.resizable(width=False, height=False)
         canvas.config(width=16*img_size+(decal*2), height=16*img_size+(decal*2))
 
-        self._color = "none"
+        self._color = None
 
         BNorth.place(x=150 , y=80, anchor= "center")
         BSouth.place(x=150 , y=160, anchor= "center")
@@ -173,15 +173,30 @@ class Window:
 
 
     def move_N(self):
-        print(self._color)
+        if self._color is not None:
+            #print(self._color)
+            #print(self._board.robot(self._color).pos().x)
+            #print(self._board.robot(self._color).pos().x)
+            cord =self._board.case(self._board.robot(self._color).pos().x,self._board.robot(self._color).pos().y)
+            print(cord.destination(Direction.Direction.NORTH))
+            #self._board.move_bot(self._color,cord.destination(Direction.Direction.NORTH)
         #self._board.move_valid_bot(self._board.robot(self._color), Direction.Direction.NORTH):
+        self._color = None
 
     def move_S(self):
-        print(self._color)
+        if self._color is not None:
+            print(self._color)
+        self._color = None
+
     def move_E(self):
-        print(self._color)
+        if self._color is not None:
+            print(self._color)
+        self._color = None
+
     def move_W(self):
-        print(self._color)
+        if self._color is not None:
+            print(self._color)
+        self._color = None
 
     def pick_R(self):
         self._color = "Red"
