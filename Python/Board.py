@@ -26,6 +26,12 @@ class Board:
     def robots(self):
         return self._robots
 
+    def robot(self, objective_color):
+        for i in range(4):
+            if self._robots[i].color() == objective_color:
+                return self._robots[i]
+
+
     def case(self, i, j):
         return self._cases[i][j]
 

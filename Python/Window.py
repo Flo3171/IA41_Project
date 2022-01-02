@@ -1,78 +1,71 @@
 from tkinter import *
 import Direction
 import GameObject
-import Board
 
-img_size =38
+img_size = 38
 decal = 0
 _window = Tk()
 _window.title("Rasend Robot")
-canvas = Canvas(_window,bg = "black")
+canvas = Canvas(_window, bg="black")
 canvas.place(x=0, y=0)
-canvas2 = Canvas(_window,bg = "brown")
-canvas2.place(x=16*img_size+300+decal, y=0 , anchor = "ne",width=300,height=16*img_size+decal)
+canvas2 = Canvas(_window, bg="brown")
+canvas2.place(x=16*img_size+300+decal, y=0, anchor="ne", width=300, height=16*img_size+decal)
 
+BNorth = Button(canvas2, text="NORTH", bg ="purple" )
+BSouth = Button(canvas2, text="SOUTH", bg="purple")
+BEast = Button(canvas2, text="EAST", bg="purple")
+BWest = Button(canvas2, text="WEST", bg="purple")
+BRed = Button(canvas2, text="", bg="red", width=5)
+BBlue = Button(canvas2, text="", bg="blue", width=5)
+BGreen = Button(canvas2, text="", bg="green", width=5)
+BYellow = Button(canvas2, text="", bg="yellow", width=5)
 
-
-BNorth = Button(canvas2,text="NORTH",bg ="purple" )
-BSouth = Button(canvas2,text="SOUTH",bg ="purple")
-BEast = Button(canvas2,text="EAST",bg ="purple")
-BWest = Button(canvas2,text="WEST",bg ="purple")
-BRed = Button(canvas2,text="",bg ="red", width=5)
-BBlue = Button(canvas2,text="",bg ="blue", width=5)
-BGreen = Button(canvas2,text="",bg ="green", width=5)
-BYellow = Button(canvas2,text="",bg ="yellow", width=5)
-
-
-
-IMG_R_robot = PhotoImage ( file = "files/robots/RedRobot.png" )
-IMG_B_robot = PhotoImage ( file = "files/robots/BlueRobot.png" )
-IMG_G_robot = PhotoImage ( file = "files/robots/GreenRobot.png" )
-IMG_Y_robot = PhotoImage ( file = "files/robots/YellowRobot.png" )
+IMG_R_robot = PhotoImage(file="files/robots/RedRobot.png" )
+IMG_B_robot = PhotoImage(file="files/robots/BlueRobot.png" )
+IMG_G_robot = PhotoImage(file="files/robots/GreenRobot.png" )
+IMG_Y_robot = PhotoImage(file="files/robots/YellowRobot.png" )
 
 """R_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_R_robot , anchor = "center" )
 B_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_B_robot , anchor = "center" )
 G_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_G_robot , anchor = "center" )
 Y_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_Y_robot , anchor = "center" )"""
 
-IMG_cell = PhotoImage ( file = "files/board/CaseX38.png" )
-IMG_H_Wall = PhotoImage ( file = "files/board/VWallX38.png" )
-IMG_V_Wall = PhotoImage ( file = "files/board/HWallX38.png" )
-IMG_VORTEX = PhotoImage ( file = "files/items/Vortex.png" )
-IMG_BLUE_BALL =PhotoImage ( file = "files/items/BlueBall.png" )
-IMG_RED_BALL =PhotoImage ( file = "files/items/RedBall.png" )
-IMG_GREEN_BALL =PhotoImage ( file = "files/items/GreenBall.png" )
-IMG_YELLOW_BALL =PhotoImage ( file = "files/items/YellowBall.png" )
-IMG_BLUE_COIN =PhotoImage ( file = "files/items/BlueCoin.png" )
-IMG_RED_COIN =PhotoImage ( file = "files/items/RedCoin.png" )
-IMG_GREEN_COIN =PhotoImage ( file = "files/items/GreenCoin.png" )
-IMG_YELLOW_COIN =PhotoImage ( file = "files/items/YellowCoin.png" )
-IMG_BLUE_RING =PhotoImage ( file = "files/items/BlueRing.png" )
-IMG_RED_RING =PhotoImage ( file = "files/items/RedRing.png" )
-IMG_GREEN_RING =PhotoImage ( file = "files/items/GreenRing.png" )
-IMG_YELLOW_RING =PhotoImage ( file = "files/items/YellowRing.png" )
-IMG_BLUE_BEACON =PhotoImage ( file = "files/items/BlueBeacon.png" )
-IMG_RED_BEACON =PhotoImage ( file = "files/items/RedBeacon.png" )
-IMG_GREEN_BEACON =PhotoImage ( file = "files/items/GreenBeacon.png" )
-IMG_YELLOW_BEACON =PhotoImage ( file = "files/items/YellowBeacon.png" )
-
-
+IMG_cell = PhotoImage(file="files/board/CaseX38.png")
+IMG_H_Wall = PhotoImage(file="files/board/VWallX38.png")
+IMG_V_Wall = PhotoImage(file="files/board/HWallX38.png")
+IMG_VORTEX = PhotoImage(file="files/items/Vortex.png")
+IMG_BLUE_BALL = PhotoImage(file="files/items/BlueBall.png")
+IMG_RED_BALL = PhotoImage(file="files/items/RedBall.png")
+IMG_GREEN_BALL = PhotoImage(file="files/items/GreenBall.png")
+IMG_YELLOW_BALL = PhotoImage(file="files/items/YellowBall.png")
+IMG_BLUE_COIN = PhotoImage(file="files/items/BlueCoin.png")
+IMG_RED_COIN = PhotoImage(file="files/items/RedCoin.png")
+IMG_GREEN_COIN = PhotoImage(file="files/items/GreenCoin.png")
+IMG_YELLOW_COIN = PhotoImage(file="files/items/YellowCoin.png")
+IMG_BLUE_RING = PhotoImage(file="files/items/BlueRing.png")
+IMG_RED_RING = PhotoImage(file="files/items/RedRing.png")
+IMG_GREEN_RING = PhotoImage(file="files/items/GreenRing.png")
+IMG_YELLOW_RING = PhotoImage(file="files/items/YellowRing.png")
+IMG_BLUE_BEACON = PhotoImage(file="files/items/BlueBeacon.png")
+IMG_RED_BEACON = PhotoImage(file="files/items/RedBeacon.png")
+IMG_GREEN_BEACON = PhotoImage(file="files/items/GreenBeacon.png")
+IMG_YELLOW_BEACON = PhotoImage(file="files/items/YellowBeacon.png")
 
 
 class Window:
 
-    def __init__(self, height,width):
+    def __init__(self, height, width):
         _window.geometry(str(height)+"x"+str(width))
         _window.resizable(width=False, height=False)
         canvas.config(width=width, height=height)
-        BNorth.place(x =150 , y = 80, anchor= "center")
-        BSouth.place(x =150 , y = 160, anchor= "center")
-        BEast.place(x =200 , y = 120, anchor= "center")
-        BWest.place(x =100 , y = 120, anchor= "center")
-        BRed.place(x =40 , y = 200, anchor= "center")
-        BBlue.place(x =110 , y = 200, anchor= "center")
-        BGreen.place(x =180 , y = 200, anchor= "center")
-        BYellow.place(x =250 , y = 200, anchor= "center")
+        BNorth.place(x=150 , y=80, anchor= "center")
+        BSouth.place(x=150 , y=160, anchor= "center")
+        BEast.place(x=200 , y=120, anchor= "center")
+        BWest.place(x=100 , y=120, anchor= "center")
+        BRed.place(x=40 , y=200, anchor= "center")
+        BBlue.place(x=110 , y=200, anchor= "center")
+        BGreen.place(x=180 , y=200, anchor= "center")
+        BYellow.place(x=250 , y=200, anchor= "center")
 
     def __init__(self,board):
         self._board = board
@@ -83,14 +76,14 @@ class Window:
 
         self._color = "none"
 
-        BNorth.place(x =150 , y = 80, anchor= "center")
-        BSouth.place(x =150 , y = 160, anchor= "center")
-        BEast.place(x =200 , y = 120, anchor= "center")
-        BWest.place(x =100 , y = 120, anchor= "center")
-        BRed.place(x =40 , y = 200, anchor= "center")
-        BBlue.place(x =110 , y = 200, anchor= "center")
-        BGreen.place(x =180 , y = 200, anchor= "center")
-        BYellow.place(x =250 , y = 200, anchor= "center")
+        BNorth.place(x=150 , y=80, anchor= "center")
+        BSouth.place(x=150 , y=160, anchor= "center")
+        BEast.place(x=200 , y=120, anchor= "center")
+        BWest.place(x=100 , y=120, anchor= "center")
+        BRed.place(x=40 , y=200, anchor= "center")
+        BBlue.place(x=110 , y=200, anchor= "center")
+        BGreen.place(x=180 , y=200, anchor= "center")
+        BYellow.place(x=250 , y=200, anchor= "center")
 
 
 
@@ -181,6 +174,8 @@ class Window:
 
     def move_N(self):
         print(self._color)
+        #self._board.move_valid_bot(self._board.robot(self._color), Direction.Direction.NORTH):
+
     def move_S(self):
         print(self._color)
     def move_E(self):
