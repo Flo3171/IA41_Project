@@ -58,7 +58,8 @@ class Map:
     def generateMap(self,board):
         foundRobot = False
         moveCost = 1
-        x,y = board._caseDestinationCoord
+        x = board._destination.coord().x()
+        y = board._destination.coord().y()
         self.addValue(x,y,50)            #Value assigned to destination, that shouldn't be reached otherwise
         while (foundRobot == False):
             for i in range(15):
@@ -71,6 +72,8 @@ class Map:
             moveCost += 1
             
             
+    def mapScore(self):
+        return self._mapScore
         
         
 
