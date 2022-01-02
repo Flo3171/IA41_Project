@@ -5,7 +5,7 @@ class Coord:
 
     def __str__(self):
         return "x= %d, y= %d" % (self._x, self._y)
-    
+
     @property
     def x(self):
         return self._x
@@ -17,11 +17,7 @@ class Coord:
     @x.setter
     def x(self, x):
         self._x = x
-        
-    @property
-    def y(self):
-        return self._y
-    
+
     @y.setter
     def y(self, y):
         self._y = y
@@ -29,27 +25,26 @@ class Coord:
     def rotate(self, angle):
 
         angle = angle % 4
-        xA = self.x - 7.5
-        yA = 7.5 - self.y
+        x_a = self.x - 7.5
+        y_a = 7.5 - self.y
 
-        if(angle == 0):
+        if angle == 0:
             cos = 1
             sin = 0
-        elif(angle == 1):
+        elif angle == 1:
             cos = 0
             sin = -1
-        elif(angle == 2):
+        elif angle == 2:
             cos = -1
-            sin =  0
-        elif(angle == 3):
+            sin = 0
+        else:
             cos = 0
             sin = 1
-        
-        xB = xA*cos - yA*sin
-        yB = yA*cos + xA* sin
 
-        xC = int(xB + 7.5)
-        yC = int(7.5 - yB)
+        x_b = x_a * cos - y_a * sin
+        y_b = y_a * cos + x_a * sin
 
+        x_c = int(x_b + 7.5)
+        y_c = int(7.5 - y_b)
 
-        return Coord(xC, yC)
+        return Coord(x_c, y_c)

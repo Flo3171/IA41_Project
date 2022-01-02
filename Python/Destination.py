@@ -1,10 +1,7 @@
-import Case
-import Direction
-
 class Destination:
     def __init__(self, direction, case):
-         self._direction = direction
-         self._case = case
+        self._direction = direction
+        self._case = case
 
     @property
     def direction(self):

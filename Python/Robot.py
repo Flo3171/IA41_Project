@@ -1,17 +1,15 @@
-import Coord
-
 class Robot:
-    def __init__(self, color, startPos):
+    def __init__(self, color, start_pos):
         self._color = color
-        self._pos = startPos
-        self._startPos = startPos
+        self._pos = start_pos
+        self._startPos = start_pos
 
     @property
     def color(self):
         return self._color
 
     @property
-    def startPos(self):
+    def start_pos(self):
         return self._startPos
 
     @property
@@ -22,10 +20,8 @@ class Robot:
     def image(self):
         return self._image
 
-    def mouve(self, coord):
+    def move(self, coord):
         self._pos = coord
 
     def reset_pos(self):
         self._pos = self._startPos
-
-

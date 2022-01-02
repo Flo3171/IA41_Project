@@ -1,4 +1,3 @@
-import Board
 import Numpy as np
 
 

@@ -6,7 +6,7 @@ import GameObject
 import Robot
 import Destination
 import random
-import math
+
 
 class Board:
 
@@ -15,13 +15,13 @@ class Board:
         self._cases = [[Case.Case(Coord.Coord(j, i)) for i in range(16)] for j in range(16)]
 
         self._robots = []
-        #self._caseDestinationCoord #à générer sous forme [i,j]
+        # self._caseDestinationCoord #à générer sous forme [i,j]
 
-    def genreate_board(self):
+    def generate_board(self):
 
         for j in range(16):
 
-            #put the wall around the map
+            # put the wall around the map
             self._cases[j][0].add_wall(Wall.Wall(Direction.Direction.NORTH))
             self._cases[0][j].add_wall(Wall.Wall(Direction.Direction.WEST))
             self._cases[j][15].add_wall(Wall.Wall(Direction.Direction.SOUTH))
@@ -29,7 +29,7 @@ class Board:
 
             for i in range(16):
 
-                #put the wall around the central block
+                # put the wall around the central block
                 if i == 7 or i == 8:
                     if j == 6:
                         self._cases[i][6].add_wall(Wall.Wall(Direction.Direction.SOUTH))
@@ -41,20 +41,19 @@ class Board:
                     elif i == 9:
                         self._cases[9][j].add_wall(Wall.Wall(Direction.Direction.WEST))
 
-
-        avaliableQuarter = [True, True, True, True]
-        #put one template on each quarter map
+        available_quarter = [True, True, True, True]
+        # put one template on each quarter map
         for i in range(4):
 
             template = random.randint(0, 15)
 
-            while(avaliableQuarter[template % 4] == False):
+            while not available_quarter[template % 4]:
                 template = random.randint(0, 15)
-            
-            avaliableQuarter[template % 4] = False
 
-            if (template == 0):
-                #template number 0
+            available_quarter[template % 4] = False
+
+            if template == 0:
+                # template number 0
                 self.put_wall(Coord.Coord(1, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(2, 0), Direction.Direction.WEST, i)
 
@@ -62,13 +61,12 @@ class Board:
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.NORTH, i)
 
                 self.put_object(Coord.Coord(4, 1), i, GameObject.GameObject.RED_BALL, Direction.Direction.NORTH_WEST)
-                self.put_object(Coord.Coord(2, 1), i, GameObject.GameObject.GREEN_BEACON, Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(2, 1), i, GameObject.GameObject.GREEN_BEACON,
+                                Direction.Direction.NORTH_EAST)
                 self.put_object(Coord.Coord(6, 3), i, GameObject.GameObject.YELLOW_COIN, Direction.Direction.SOUTH_EAST)
                 self.put_object(Coord.Coord(4, 6), i, GameObject.GameObject.BLUE_RING, Direction.Direction.SOUTH_WEST)
 
-
-            
-            elif (template == 1):
+            elif template == 1:
                 # template number 1
                 self.put_wall(Coord.Coord(3, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(4, 0), Direction.Direction.WEST, i)
@@ -81,7 +79,7 @@ class Board:
                 self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_BALL, Direction.Direction.NORTH_WEST)
                 self.put_object(Coord.Coord(2, 6), i, GameObject.GameObject.BLUE_BEACON, Direction.Direction.NORTH_EAST)
 
-            elif (template == 2):
+            elif template == 2:
                 # template number 2
                 self.put_wall(Coord.Coord(3, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(4, 0), Direction.Direction.WEST, i)
@@ -94,21 +92,22 @@ class Board:
                 self.put_object(Coord.Coord(7, 5), i, GameObject.GameObject.RED_BEACON, Direction.Direction.SOUTH_WEST)
                 self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.YELLOW_RING, Direction.Direction.NORTH_WEST)
 
-            elif (template == 3):
+            elif template == 3:
                 # template number 3
                 self.put_wall(Coord.Coord(3, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(4, 0), Direction.Direction.WEST, i)
- 
+
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 7), Direction.Direction.NORTH, i)
 
                 self.put_object(Coord.Coord(6, 1), i, GameObject.GameObject.BLUE_BALL, Direction.Direction.SOUTH_WEST)
-                self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.YELLOW_BEACON, Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.YELLOW_BEACON,
+                                Direction.Direction.NORTH_EAST)
                 self.put_object(Coord.Coord(5, 4), i, GameObject.GameObject.GREEN_RING, Direction.Direction.NORTH_WEST)
                 self.put_object(Coord.Coord(2, 5), i, GameObject.GameObject.RED_COIN, Direction.Direction.SOUTH_EAST)
                 self.put_object(Coord.Coord(7, 5), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST)
 
-            elif (template == 4):
+            elif template == 4:
                 # template number 4
                 self.put_wall(Coord.Coord(4, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(5, 0), Direction.Direction.WEST, i)
@@ -117,11 +116,12 @@ class Board:
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.NORTH, i)
 
                 self.put_object(Coord.Coord(6, 1), i, GameObject.GameObject.YELLOW_COIN, Direction.Direction.SOUTH_EAST)
-                self.put_object(Coord.Coord(1, 2), i, GameObject.GameObject.GREEN_BEACON, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(1, 2), i, GameObject.GameObject.GREEN_BEACON,
+                                Direction.Direction.NORTH_WEST)
                 self.put_object(Coord.Coord(6, 5), i, GameObject.GameObject.BLUE_RING, Direction.Direction.NORTH_EAST)
                 self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.RED_BALL, Direction.Direction.SOUTH_WEST)
 
-            elif (template == 5):
+            elif template == 5:
                 # template number 5
                 self.put_wall(Coord.Coord(4, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(5, 0), Direction.Direction.WEST, i)
@@ -134,7 +134,7 @@ class Board:
                 self.put_object(Coord.Coord(4, 5), i, GameObject.GameObject.RED_RING, Direction.Direction.NORTH_EAST)
                 self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.GREEN_COIN, Direction.Direction.SOUTH_WEST)
 
-            elif (template == 6):
+            elif template == 6:
                 # template number 6
                 self.put_wall(Coord.Coord(3, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(4, 0), Direction.Direction.WEST, i)
@@ -147,7 +147,7 @@ class Board:
                 self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.BLUE_COIN, Direction.Direction.SOUTH_EAST)
                 self.put_object(Coord.Coord(7, 5), i, GameObject.GameObject.YELLOW_RING, Direction.Direction.NORTH_WEST)
 
-            elif (template == 7):
+            elif template == 7:
                 # template number 7
                 self.put_wall(Coord.Coord(4, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(5, 0), Direction.Direction.WEST, i)
@@ -157,11 +157,12 @@ class Board:
 
                 self.put_object(Coord.Coord(2, 1), i, GameObject.GameObject.RED_COIN, Direction.Direction.SOUTH_EAST)
                 self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.GREEN_RING, Direction.Direction.SOUTH_WEST)
-                self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_BEACON, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_BEACON,
+                                Direction.Direction.NORTH_WEST)
                 self.put_object(Coord.Coord(5, 6), i, GameObject.GameObject.BLUE_BALL, Direction.Direction.NORTH_EAST)
                 self.put_object(Coord.Coord(3, 7), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST)
 
-            elif (template == 8):
+            elif template == 8:
                 # template number 8
                 self.put_wall(Coord.Coord(1, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(2, 0), Direction.Direction.WEST, i)
@@ -169,12 +170,13 @@ class Board:
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 7), Direction.Direction.NORTH, i)
 
-                self.put_object(Coord.Coord(3, 1), i, GameObject.GameObject.GREEN_BEACON, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(3, 1), i, GameObject.GameObject.GREEN_BEACON,
+                                Direction.Direction.NORTH_WEST)
                 self.put_object(Coord.Coord(6, 3), i, GameObject.GameObject.YELLOW_COIN, Direction.Direction.SOUTH_EAST)
                 self.put_object(Coord.Coord(1, 4), i, GameObject.GameObject.RED_BALL, Direction.Direction.SOUTH_WEST)
                 self.put_object(Coord.Coord(4, 6), i, GameObject.GameObject.BLUE_RING, Direction.Direction.NORTH_EAST)
 
-            elif (template == 9):
+            elif template == 9:
                 # template number 9
                 self.put_wall(Coord.Coord(5, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(6, 0), Direction.Direction.WEST, i)
@@ -186,8 +188,8 @@ class Board:
                 self.put_object(Coord.Coord(5, 3), i, GameObject.GameObject.BLUE_BEACON, Direction.Direction.SOUTH_WEST)
                 self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.RED_RING, Direction.Direction.NORTH_EAST)
                 self.put_object(Coord.Coord(4, 5), i, GameObject.GameObject.GREEN_COIN, Direction.Direction.SOUTH_WEST)
-            
-            elif (template == 10):
+
+            elif template == 10:
                 # template number 10
                 self.put_wall(Coord.Coord(1, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(2, 0), Direction.Direction.WEST, i)
@@ -200,7 +202,7 @@ class Board:
                 self.put_object(Coord.Coord(5, 5), i, GameObject.GameObject.YELLOW_RING, Direction.Direction.NORTH_WEST)
                 self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.BLUE_COIN, Direction.Direction.SOUTH_EAST)
 
-            elif (template == 11):
+            elif template == 11:
                 # template number 11
                 self.put_wall(Coord.Coord(2, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(3, 0), Direction.Direction.WEST, i)
@@ -211,10 +213,11 @@ class Board:
                 self.put_object(Coord.Coord(5, 1), i, GameObject.GameObject.BLUE_BALL, Direction.Direction.SOUTH_WEST)
                 self.put_object(Coord.Coord(3, 4), i, GameObject.GameObject.RED_COIN, Direction.Direction.SOUTH_EAST)
                 self.put_object(Coord.Coord(6, 5), i, GameObject.GameObject.GREEN_RING, Direction.Direction.NORTH_WEST)
-                self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.YELLOW_BEACON, Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.YELLOW_BEACON,
+                                Direction.Direction.NORTH_EAST)
                 self.put_object(Coord.Coord(7, 1), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_WEST)
 
-            elif (template == 12):
+            elif template == 12:
                 # template number 12
                 self.put_wall(Coord.Coord(5, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(6, 0), Direction.Direction.WEST, i)
@@ -224,10 +227,11 @@ class Board:
 
                 self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.RED_BALL, Direction.Direction.NORTH_WEST)
                 self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_COIN, Direction.Direction.SOUTH_EAST)
-                self.put_object(Coord.Coord(2, 6), i, GameObject.GameObject.GREEN_BEACON, Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(2, 6), i, GameObject.GameObject.GREEN_BEACON,
+                                Direction.Direction.NORTH_EAST)
                 self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.BLUE_RING, Direction.Direction.SOUTH_WEST)
 
-            elif (template == 13):
+            elif template == 13:
                 # template number 13
                 self.put_wall(Coord.Coord(2, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(3, 0), Direction.Direction.WEST, i)
@@ -240,7 +244,7 @@ class Board:
                 self.put_object(Coord.Coord(1, 5), i, GameObject.GameObject.RED_RING, Direction.Direction.SOUTH_WEST)
                 self.put_object(Coord.Coord(4, 7), i, GameObject.GameObject.BLUE_BEACON, Direction.Direction.NORTH_EAST)
 
-            elif (template == 14):
+            elif template == 14:
                 # template number 14
                 self.put_wall(Coord.Coord(4, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(5, 0), Direction.Direction.WEST, i)
@@ -253,7 +257,7 @@ class Board:
                 self.put_object(Coord.Coord(3, 4), i, GameObject.GameObject.RED_BEACON, Direction.Direction.SOUTH_WEST)
                 self.put_object(Coord.Coord(5, 6), i, GameObject.GameObject.YELLOW_RING, Direction.Direction.NORTH_WEST)
 
-            elif (template == 15):
+            elif template == 15:
                 # template number 15
                 self.put_wall(Coord.Coord(4, 0), Direction.Direction.EAST, i)
                 self.put_wall(Coord.Coord(5, 0), Direction.Direction.WEST, i)
@@ -261,7 +265,8 @@ class Board:
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 7), Direction.Direction.NORTH, i)
 
-                self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.YELLOW_BEACON, Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.YELLOW_BEACON,
+                                Direction.Direction.NORTH_WEST)
                 self.put_object(Coord.Coord(2, 3), i, GameObject.GameObject.BLUE_BALL, Direction.Direction.NORTH_EAST)
                 self.put_object(Coord.Coord(3, 3), i, GameObject.GameObject.GREEN_RING, Direction.Direction.SOUTH_WEST)
                 self.put_object(Coord.Coord(1, 5), i, GameObject.GameObject.RED_COIN, Direction.Direction.SOUTH_EAST)
@@ -271,17 +276,18 @@ class Board:
 
         colors = ["Blue", "Green", "Red", "Yellow"]
         for i in range(4):
-            coordX = random.randint(0, 15)
-            coordY = random.randint(0, 15)
-            boardCase = self._cases[coordX][coordY]
-            while (((coordX > 6 and coordX < 9) and (coordY > 6 and coordY < 9 )) or boardCase.has_game_object() or boardCase.has_bot()):
-                coordX = random.randint(0, 15)
-                coordY = random.randint(0, 15)
-                boardCase = self._cases[coordX][coordY]
-            robot = Robot.Robot(colors[i], Coord.Coord(coordX, coordY))
+            coord_x = random.randint(0, 15)
+            coord_y = random.randint(0, 15)
+            board_case = self._cases[coord_x][coord_y]
+            while (((6 < coord_x < 9) and (
+                    6 < coord_y < 9)) or board_case.has_game_object() or board_case.has_bot()):
+                coord_x = random.randint(0, 15)
+                coord_y = random.randint(0, 15)
+                board_case = self._cases[coord_x][coord_y]
+            robot = Robot.Robot(colors[i], Coord.Coord(coord_x, coord_y))
             self._robots.append(robot)
-            boardCase.place_bot(robot)
-        
+            board_case.place_bot(robot)
+
     # Methods to compute for each case the cases on which we can go in one move
     def next_states(self, x, y):
         directions = [
@@ -292,76 +298,72 @@ class Board:
         ]
         can_go = []
 
-        for dir in directions:
+        for direction in directions:
             actual_x = x
             actual_y = y
             # While the actual case has no wall in the direction we follow
-            while not self._cases[actual_x][actual_y].has_walls_in_dir(dir):
+            while not self._cases[actual_x][actual_y].has_walls_in_dir(direction):
                 # If the next case has a bot, we stop
-                if (self._cases[actual_x + Direction.get_x(dir)][actual_y + Direction.get_y(dir)].has_bot):
+                if self._cases[actual_x + Direction.get_x(direction)][actual_y + Direction.get_y(direction)].has_bot:
                     break
-                # If their is no obstactle, we increase the test coordinates and we loop
-                actual_x += Direction.get_x(dir)
-                actual_y += Direction.get_y(dir)
+                # If there is no obstacle, we increase the test coordinates, and we loop
+                actual_x += Direction.get_x(direction)
+                actual_y += Direction.get_y(direction)
 
             # When we exit the loop, we create a new destination with the last test coordinates
-            can_go.append(Destination.Destination(dir, self._cases[actual_x][actual_y]))
+            can_go.append(Destination.Destination(direction, self._cases[actual_x][actual_y]))
 
         return can_go
 
-
-            
-
-
     def put_wall(self, coord, direction, rotation):
-        if( coord.x >= 0 & coord.x < 16 & coord.y >= 0 & coord.y < 16):
-            newCord = coord.rotate(rotation)
-            self._cases[newCord.x][newCord.y].add_wall(Wall.Wall(Direction.get_n_adjacent(direction, rotation)))
+        if coord.x >= 0 & coord.x < 16 & coord.y >= 0 & coord.y < 16:
+            new_cord = coord.rotate(rotation)
+            self._cases[new_cord.x][new_cord.y].add_wall(Wall.Wall(Direction.get_n_adjacent(direction, rotation)))
 
     def put_object(self, coord, rotation, obj, direction):
-        newCord = coord.rotate(rotation)
-        self._cases[newCord.x][newCord.y].add_game_object(obj)
-        
-        if(direction == Direction.Direction.NORTH_EAST):
+        new_cord = coord.rotate(rotation)
+        self._cases[new_cord.x][new_cord.y].add_game_object(obj)
+
+        if direction == Direction.Direction.NORTH_EAST:
             self.put_wall(coord, Direction.Direction.NORTH, rotation)
-            self.put_wall(Coord.Coord(coord.x, coord.y-1), Direction.Direction.SOUTH, rotation)
+            self.put_wall(Coord.Coord(coord.x, coord.y - 1), Direction.Direction.SOUTH, rotation)
 
             self.put_wall(coord, Direction.Direction.EAST, rotation)
-            self.put_wall(Coord.Coord(coord.x + 1,  coord.y), Direction.Direction.WEST, rotation)
-        
-        elif(direction == Direction.Direction.SOUTH_EAST):
+            self.put_wall(Coord.Coord(coord.x + 1, coord.y), Direction.Direction.WEST, rotation)
+
+        elif direction == Direction.Direction.SOUTH_EAST:
             self.put_wall(Coord.Coord(coord.x, coord.y + 1), Direction.Direction.NORTH, rotation)
             self.put_wall(coord, Direction.Direction.SOUTH, rotation)
 
             self.put_wall(coord, Direction.Direction.EAST, rotation)
-            self.put_wall(Coord.Coord(coord.x + 1,  coord.y), Direction.Direction.WEST, rotation)
+            self.put_wall(Coord.Coord(coord.x + 1, coord.y), Direction.Direction.WEST, rotation)
 
-        elif(direction == Direction.Direction.SOUTH_WEST):
+        elif direction == Direction.Direction.SOUTH_WEST:
             self.put_wall(Coord.Coord(coord.x, coord.y + 1), Direction.Direction.NORTH, rotation)
             self.put_wall(coord, Direction.Direction.SOUTH, rotation)
 
             self.put_wall(Coord.Coord(coord.x - 1, coord.y), Direction.Direction.EAST, rotation)
             self.put_wall(coord, Direction.Direction.WEST, rotation)
 
-        elif(direction == Direction.Direction.NORTH_WEST):
+        elif direction == Direction.Direction.NORTH_WEST:
             self.put_wall(coord, Direction.Direction.NORTH, rotation)
             self.put_wall(Coord.Coord(coord.x, coord.y - 1), Direction.Direction.SOUTH, rotation)
 
             self.put_wall(Coord.Coord(coord.x - 1, coord.y), Direction.Direction.EAST, rotation)
             self.put_wall(coord, Direction.Direction.WEST, rotation)
 
-    # Method that check in a radius of one arround de given coordinates if their is an other object
+    # Method that check in a radius of one around de given coordinates if there is another object
     def is_nearby(self, x, y):
         y_test = y - 1
         for i in range(3):
             x_test = x - 1
             for j in range(3):
                 if (
-                    self._cases[x_test][y_test].has_game_object()
-                    or x_test == 7
-                    or x_test == 8
-                    or y_test == 7
-                    or y_test == 8
+                        self._cases[x_test][y_test].has_game_object()
+                        or x_test == 7
+                        or x_test == 8
+                        or y_test == 7
+                        or y_test == 8
                 ):
                     return True
                 x_test += 1
@@ -384,11 +386,11 @@ class Board:
             break
 
     # Method to remove an object of the board at the end of the round
-    def remove_object(self, object):
+    def remove_object(self, game_object):
         for i in range(16):
             for j in range(16):
                 if self._cases[i][j].has_game_object():
-                    if self._cases[i][j].game_object == object:
+                    if self._cases[i][j].game_object == game_object:
                         self._cases[i][j].remove_game_object()
 
     # Method to replace the moved bots to their start position
@@ -398,24 +400,13 @@ class Board:
                 if self._cases[i][j].has_bot():
                     robot = self._cases[i][j].bot
                     if (
-                        robot.pos.x != robot.startPos.x
-                        or robot.pos.y != robot.startPos.y
+                            robot.pos.x != robot.start_pos.x
+                            or robot.pos.y != robot.start_pos.y
                     ):
                         robot.reset_pos()
-                        self._cases[robot.startPos.x][robot.startPos.y].place_bot(robot)
+                        self._cases[robot.start_pos.x][robot.start_pos.y].place_bot(robot)
                         self._cases[i][j].remove_bot()
-
-    # Method to update board model, to re-compute the destination possible for each case after a robot moves
-    def update(self):
-        for j in range(16):
-            for i in range(16):
-                self._cases[i][j].reset_destinations()
-                if (j < 7 or j > 8) or (i < 7 or i > 8):
-                    destinations = self.link_case(i, j)
-                    for d in destinations:
-                        self._cases[i][j].add_destination(d)
 
     @property
     def cases(self):
         return self._cases
-
