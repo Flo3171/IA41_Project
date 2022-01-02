@@ -10,7 +10,7 @@ class Case:
     def coord(self):
         return self._coord
 
-    @property
+
     def game_object(self):
         return self._gameObject
 
