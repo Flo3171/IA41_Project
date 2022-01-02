@@ -407,7 +407,7 @@ class Board:
         return can_go
 
     def put_wall(self, coord, direction, rotation):
-        if coord.x >= 0 & coord.x < 16 & coord.y >= 0 & coord.y < 16:
+        if 0 <= coord.x < 16 and 0 <= coord.y < 16:
             new_cord = coord.rotate(rotation)
             self._cases[new_cord.x][new_cord.y].add_wall(Wall.Wall(Direction.get_n_adjacent(direction, rotation)))
 
@@ -477,39 +477,39 @@ class Board:
             else:
                 continue
             break
-        
-    #Method to move a bot after finding a valid place
+
+    # Method to move a bot after finding a valid place
     def move_valid_bot(self, robot, direction):
-        s = ps.PathSolver(None,None,self)
+        s = ps.PathSolver(None, None, self)
         x = robot.pos().x()
         y = robot.pos().y()
         if direction == Direction.Direction.NORTH:
             for i in range(16):
-                if x-i>=0:
-                    if s.check_case_to_stop(x-i,y,'up'):
-                        c=Coord.Coord(x-i,y)
-                        self.move_bot(robot.color(),c)
+                if x - i >= 0:
+                    if s.check_case_to_stop(x - i, y, 'up'):
+                        c = Coord.Coord(x - i, y)
+                        self.move_bot(robot.color(), c)
                         break
         elif direction == Direction.Direction.SOUTH:
             for i in range(16):
-                if x+i>=15:
-                    if s.check_case_to_stop(x+i,y,'down'):
-                        c=Coord.Coord(x+i,y)
-                        self.move_bot(robot.color(),c)
+                if x + i >= 15:
+                    if s.check_case_to_stop(x + i, y, 'down'):
+                        c = Coord.Coord(x + i, y)
+                        self.move_bot(robot.color(), c)
                         break
         elif direction == Direction.Direction.EAST:
             for j in range(16):
-                if y+j>=0:
-                    if s.check_case_to_stop(x,y+j,'right'):
-                        c=Coord.Coord(x,y+j)
-                        self.move_bot(robot.color(),c)
+                if y + j >= 0:
+                    if s.check_case_to_stop(x, y + j, 'right'):
+                        c = Coord.Coord(x, y + j)
+                        self.move_bot(robot.color(), c)
                         break
         elif direction == Direction.Direction.WEST:
             for j in range(16):
-                if y-j>=0:
-                    if s.check_case_to_stop(x,y-j,'left'):
-                        c=Coord.Coord(x,y-j)
-                        self.move_bot(robot.color(),c)
+                if y - j >= 0:
+                    if s.check_case_to_stop(x, y - j, 'left'):
+                        c = Coord.Coord(x, y - j)
+                        self.move_bot(robot.color(), c)
                         break
 
     # Method to remove an object of the board at the end of the round

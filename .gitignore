@@ -3,3 +3,4 @@ Python/__pycache__/Window.cpython-310.pyc
 .idea/IA41_Project.iml
 .idea/misc.xml
 *.pyc
+.idea/*
