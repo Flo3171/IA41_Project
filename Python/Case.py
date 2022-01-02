@@ -43,7 +43,7 @@ class Case:
 
         return False
 
-    @property
+
     def bot(self):
         return self._bot
 
