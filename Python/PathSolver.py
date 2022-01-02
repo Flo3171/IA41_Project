@@ -14,18 +14,31 @@ class PathSolver:
         self._testBoard = copy.deepcopy(board)
         self._robots = copy.deepcopy(board.robots())
 
+        if board.objective().value == 0:
+            objective_color = None
+        elif board.objective().value % 4 == 1:
+            objective_color = "Blue"
+        elif board.objective().value % 4 == 2:
+            objective_color = "Red"
+        elif board.objective().value % 4 == 3:
+            objective_color = "Green"
+        else:
+            objective_color = "Yellow"
         for i in range(4):
-            if self.robots[i]().color() == board.objective.game_object[0]:
-                self._playerBot = self.robots[i]()
+            if self.robot(i).color() == objective_color:
+                self._playerBot = self.robots(i)
 
     @property
     def robots(self):
         return self._robots
 
+    def robot(self, i):
+        return self._robots[i]
+
     @property
     def player_bot(self):
         return self._playerBot
-    
+
     @property
     def board(self):
         return self._currentBoard
@@ -37,7 +50,7 @@ class PathSolver:
             elif (
                     self._defaultBoard.case(i - 1, j).has_wall_in_dir(
                         Direction.Direction.NORTH)) or self._defaultBoard.case(
-                    i - 1, j).has_bot():
+                i - 1, j).has_bot():
                 return True
         elif d == 'down':
             if j == 15:
@@ -45,7 +58,7 @@ class PathSolver:
             elif (
                     self._defaultBoard.cases(i + 1, j).has_wall_in_dir(
                         Direction.Direction.NORTH)) or self._defaultBoard.case(
-                    i + 1, j).has_bot():
+                i + 1, j).has_bot():
                 return True
         elif d == 'left':
             if i == 0:

@@ -2,20 +2,21 @@ from enum import Enum
 
 
 class GameObject(Enum):
-    VORTEX = ["", "Vortex"]
-    BLUE_BALL = ["Blue", "Ball"]
-    RED_BALL = ["Red", "Ball"]
-    GREEN_BALL = ["Green", "Ball"]
-    YELLOW_BALL = ["Yellow", "Ball"]
-    BLUE_COIN = ["Blue", "Coin"]
-    RED_COIN = ["Red", "Coin"]
-    GREEN_COIN = ["Green", "Coin"]
-    YELLOW_COIN = ["Yellow", "Coin"]
-    BLUE_RING = ["Blue", "Ring"]
-    RED_RING = ["Red", "Ring"]
-    GREEN_RING = ["Green", "Ring"]
-    YELLOW_RING = ["Yellow", "Ring"]
-    BLUE_BEACON = ["Blue", "Beacon"]
-    RED_BEACON = ["Red", "Beacon"]
-    GREEN_BEACON = ["Green", "Beacon"]
-    YELLOW_BEACON = ["Yellow", "Beacon"]
+
+    VORTEX = 0
+    BLUE_BALL = 1
+    RED_BALL = 2
+    GREEN_BALL = 3
+    YELLOW_BALL = 4
+    BLUE_COIN = 5
+    RED_COIN = 6
+    GREEN_COIN = 7
+    YELLOW_COIN = 8
+    BLUE_RING = 9
+    RED_RING = 10
+    GREEN_RING = 11
+    YELLOW_RING = 12
+    BLUE_BEACON = 13
+    RED_BEACON = 14
+    GREEN_BEACON = 15
+    YELLOW_BEACON = 16
