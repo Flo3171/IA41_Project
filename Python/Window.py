@@ -111,7 +111,6 @@ class Window:
                 place_cell(i,j)
         for i in range(16):
             for j in range(16):
-                print("1")
                 place_wall(i, j, board.case(i, j))
         for i in range(16):
             for j in range(16):
