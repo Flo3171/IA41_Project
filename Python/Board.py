@@ -352,7 +352,6 @@ class Board:
                     self.put_object(Coord.Coord(5, 7), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST))
 
         # create and set the position of the robot
-
         colors = ["Blue", "Green", "Red", "Yellow"]
         for i in range(4):
             coord_x = random.randint(0, 15)
@@ -373,6 +372,46 @@ class Board:
             current_objective = possible_objective.index(random.randint(0, 16))
 
         self._objective = current_objective
+
+        # Then, we store in each case of the plate, the case accesible in 1 move
+        for j in range(16):
+            for i in range(16):
+                if (j < 7 or j > 8) or (i < 7 or i > 8):
+                    destinations = self.link_case(i, j)
+                    for d in destinations:
+                        self._cases[i][j].add_destination(d)
+
+    # Methods to compute for each case the cases on which we can go in one move
+    def link_case(self, x, y):
+        directions = [
+            Direction.Direction.NORTH,
+            Direction.Direction.EAST,
+            Direction.Direction.SOUTH,
+            Direction.Direction.WEST,
+        ]
+        can_go = []
+
+        for dir in directions:
+            actual_x = x
+            actual_y = y
+            # While the actual case has no wall in the direction we follow
+            while not self._cases[actual_x][actual_y].has_walls_in_dir(dir):
+                # If the next case has a bot, we stop
+                if (
+                        self._cases[actual_x + Direction.get_x(dir)][
+                            actual_y + Direction.get_y(dir)
+                        ].bot
+                        != None
+                ):
+                    break
+                # If their is no obstactle, we increase the test coordinates and we loop
+                actual_x += Direction.get_x(dir)
+                actual_y += Direction.get_y(dir)
+
+            # When we exit the loop, we create a new destination with the last test coordinates
+            can_go.append(Destination.Destination(dir, self._cases[actual_x][actual_y]))
+
+        return can_go
 
     def find_game_object(self, game_object):
         for i in range(16):
@@ -474,9 +513,9 @@ class Board:
         for i in range(16):
             for j in range(16):
                 if self._cases[i][j].has_bot():
-                    if self._cases[i][j].bot.color == color:
-                        robot = self._cases[i][j].bot
-                        self._cases[i][j].bot.move(coord)
+                    if self._cases[i][j]._bot._color == color:
+                        robot = self._cases[i][j]._bot
+                        self._cases[i][j]._bot.move(coord)
                         self._cases[coord.x][coord.y].place_bot(robot)
                         self._cases[i][j].remove_bot()
                         break
@@ -531,10 +570,10 @@ class Board:
         for i in range(16):
             for j in range(16):
                 if self._cases[i][j].has_bot():
-                    robot = self._cases[i][j].bot
+                    robot = self._cases[i][j]._bot
                     if (
-                            robot.pos.x != robot.start_pos.x
-                            or robot.pos.y != robot.start_pos.y
+                            robot._pos.x != robot._start_pos.x
+                            or robot._pos.y != robot._start_pos.y
                     ):
                         robot.reset_pos()
                         self._cases[robot.start_pos.x][robot.start_pos.y].place_bot(robot)
