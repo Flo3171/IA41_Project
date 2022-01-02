@@ -1,4 +1,4 @@
-class Case: 
+class Case:
     def __init__(self, coord):
         self._coord = coord
         self._walls = []
@@ -19,10 +19,9 @@ class Case:
 
     def remove_game_object(self):
         self._gameObject = None
-    
+
     def has_game_object(self):
-        return self._gameObject != None
-            
+        return self._gameObject is not None
 
     @property
     def walls(self):
@@ -37,22 +36,20 @@ class Case:
         else:
             return True
 
-    def has_walls_in_dir(self, dir):
+    def has_walls_in_dir(self, direction):
         for w in self._walls:
-            if dir == w.dir:
+            if direction == w.dir:
                 return True
-        
-        return False
 
-        
+        return False
 
     @property
     def bot(self):
         return self._bot
 
     def has_bot(self):
-        return self._bot != None
-    
+        return self._bot is not None
+
     @property
     def destination(self):
         return self._destination
@@ -67,6 +64,4 @@ class Case:
         self._bot = bot
 
     def remove_bot(self):
-        self._bot
-
-    
+        self._bot = None

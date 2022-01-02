@@ -1,5 +1,3 @@
-import Coord
-import Direction
 import Board
 import Game
 from Window import Window
@@ -33,6 +31,7 @@ canvas = Canvas(f, height=500, width=500)
 canvas.grid ( row = 0 , column = 0 , sticky = "nesw" )
 CAN_Zone_Image = canvas.create_image ( 30 , 10 , image = IMG_Image , anchor = "nw" )
 f.mainloop()"""
+
 
 
 
