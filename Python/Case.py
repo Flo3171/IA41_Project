@@ -1,3 +1,5 @@
+import numpy as np
+
 class Case:
     def __init__(self, coord):
         self._coord = coord
@@ -38,8 +40,7 @@ class Case:
 
     def has_walls_in_dir(self, direction):
         for w in self._walls:
-            if direction == w.dir:
-                return True
+            return np.any(direction == w.dir)
 
         return False
 

@@ -12,21 +12,21 @@ class PathSolver:
         self._defaultBoard = copy.deepcopy(board)
         self._currentBoard = copy.deepcopy(board)
         self._testBoard = copy.deepcopy(board)
-        self._robots = copy.deepcopy(board.robots())
+        self._robots = copy.deepcopy(board._robots)
 
-        if board.objective().value == 0:
+        if board._objective._game_object.value == 0:
             objective_color = None
-        elif board.objective().value % 4 == 1:
+        elif board._objective._game_object.value % 4 == 1:
             objective_color = "Blue"
-        elif board.objective().value % 4 == 2:
+        elif board._objective._game_object.value % 4 == 2:
             objective_color = "Red"
-        elif board.objective().value % 4 == 3:
+        elif board._objective._game_object.value % 4 == 3:
             objective_color = "Green"
         else:
             objective_color = "Yellow"
         for i in range(4):
-            if self.robot(i).color() == objective_color:
-                self._playerBot = self.robots(i)
+            if self._robots[i]._color == objective_color:
+                self._playerBot = self._robots[i]
 
     @property
     def robots(self):

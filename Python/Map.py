@@ -31,43 +31,48 @@ class Map:
                 new_i, new_j = list(new_d)
                 nextTo_i = 0
                 nextTo_j = 0
+
                 if d[0] == 0:
                     nextTo_i = 1
                 else:
                     nextTo_j = 1
-                if 0 <= new_i_plus <= 15 and 0 <= new_j_plus <= 15:
-                    if board.case(new_i, new_j).bot() == self._playerBot:
-                        self.add_value(new_i, new_j, move_cost)
-                        return move_cost
-                    elif (not board.case(new_i, new_j).has_walls()) and (
-                            not board.case(new_i, new_j).has_wall_in_dir(d)):
-                        self.add_value(new_i, new_j, move_cost)
-                        break
-                    elif (board.case(new_i + nextTo_i, new_j + nextTo_j).bot() is not None) or (
-                            board.case(new_i - nextTo_i, new_j - nextTo_j).bot() is not None):
-                        self.add_value(new_i, new_j, move_cost)
-                        break
-                    elif (not board.case(new_i, new_j).has_wall_in_dir(d)) or (
-                            board.case(new_i_plus, new_j_plus).bot() is not None):
-                        break
-                elif new_i == 0 or new_i == 15 or new_j == 0 or new_j == 15:
-                    if board.case(new_i, new_j).bot() == self._playerBot:
-                        self.add_value(new_i, new_j, move_cost)
-                        return move_cost
-                    elif (board.case(new_i, new_j).has_wall_in_dir(d)) and (board.case(new_i, new_j).bot() is None):
-                        self.add_value(new_i, new_j, move_cost)
-                        break
-                    elif (board.case(new_i + nextTo_i, new_j + nextTo_j).bot() is not None) or (
-                            board.case(new_i - nextTo_i, new_j - nextTo_j).bot() is not None):
-                        self.add_value(new_i, new_j, move_cost)
-                        break
+                if new_i >= 0 and new_i <= 15 and new_j >= 0 and new_j <= 15:
+                    if 0 <= new_i_plus <= 15 and 0 <= new_j_plus <= 15:
+                        if board._cases[new_i][new_j]._bot != None:
+                            if board._cases[new_i][new_j]._bot == self._playerBot:
+                                self.add_value(new_i, new_j, move_cost)
+                                return move_cost
+                        elif (not board.case(new_i, new_j).has_walls()) and (
+                                not board.case(new_i, new_j).has_walls_in_dir(d)):
+                            self.add_value(new_i, new_j, move_cost)
+                            break
+                        elif (board.case(new_i + nextTo_i, new_j + nextTo_j).bot() is not None) or (
+                                board.case(new_i - nextTo_i, new_j - nextTo_j).bot() is not None):
+                            self.add_value(new_i, new_j, move_cost)
+                            break
+                        elif (not board.case(new_i, new_j).has_walls_in_dir(d)) or (
+                                board.case(new_i_plus, new_j_plus).bot() is not None):
+                            break
+                    elif new_i == 0 or new_i == 15 or new_j == 0 or new_j == 15:
+                        if board._cases[new_i][new_j]._bot != None:
+                            if board._cases[new_i][new_j]._bot == self._playerBot:
+                                self.add_value(new_i, new_j, move_cost)
+                                return move_cost
+                        elif (board.case(new_i, new_j).has_walls_in_dir(d)) and (
+                                board.case(new_i, new_j).bot() is None):
+                            self.add_value(new_i, new_j, move_cost)
+                            break
+                        elif (board.case(new_i + nextTo_i, new_j + nextTo_j).bot() is not None) or (
+                                board.case(new_i - nextTo_i, new_j - nextTo_j).bot() is not None):
+                            self.add_value(new_i, new_j, move_cost)
+                            break
         return 0
 
     def generate_map(self, board):
         foundRobot = False
         moveCost = 1
-        x = board.destination().coord().x()
-        y = board.destination().coord().y()
+        x = board._objective._coord._x
+        y = board._objective._coord._y
         self.add_value(x, y, 50)  # Value assigned to destination, that shouldn't be reached otherwise
         while not foundRobot:
             for i in range(15):

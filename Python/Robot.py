@@ -4,9 +4,6 @@ class Robot:
         self._pos = start_pos
         self._startPos = start_pos
 
-    def __eq__(self, other):
-        return self._color == other.color() and self._pos == other.pos() and self._startPos == other.startPos()
-
 
     def color(self):
         return self._color
@@ -24,3 +21,8 @@ class Robot:
 
     def reset_pos(self):
         self._pos = self._startPos
+"""
+    def __eq__(self, other):
+        if (self._color == other._color) and (self._pos == other._pos) and (self._startPos == other._startPos):
+            return True
+"""
