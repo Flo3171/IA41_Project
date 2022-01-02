@@ -7,11 +7,10 @@ import GameObject
 import Coord
 import Direction
 
-fen = Window()
 
 b = Board.Board()
-b.generate_board()
-fen.draw_board(b)
+fen = Window(b)
+fen.draw_board()
 fen.launch()
 
 """ia=ps.PathSolver(None,None,b)
