@@ -7,6 +7,7 @@ import Robot
 import Destination
 import random
 import Objective
+import PathSolver as ps
 
 
 class Board:
@@ -407,6 +408,41 @@ class Board:
             else:
                 continue
             break
+    
+    #Method to move a bot after finding a valid place
+    def move_valid_bot(self, robot, direction):
+        s = ps.PathSolver(None,None,self)
+        x = robot.pos().x()
+        y = robot.pos().y()
+        if direction == Direction.Direction.NORTH:
+            for i in range(16):
+                if x-i>=0:
+                    if s.check_case_to_stop(x-i,y,'up'):
+                        c=Coord.Coord(x-i,y)
+                        self.move_bot(robot.color(),c)
+                        break
+        elif direction == Direction.Direction.SOUTH:
+            for i in range(16):
+                if x+i>=15:
+                    if s.check_case_to_stop(x+i,y,'down'):
+                        c=Coord.Coord(x+i,y)
+                        self.move_bot(robot.color(),c)
+                        break
+        elif direction == Direction.Direction.EAST:
+            for j in range(16):
+                if y+j>=0:
+                    if s.check_case_to_stop(x,y+j,'right'):
+                        c=Coord.Coord(x,y+j)
+                        self.move_bot(robot.color(),c)
+                        break
+        elif direction == Direction.Direction.WEST:
+            for j in range(16):
+                if y-j>=0:
+                    if s.check_case_to_stop(x,y-j,'left'):
+                        c=Coord.Coord(x,y-j)
+                        self.move_bot(robot.color(),c)
+                        break
+        
 
     # Method to remove an object of the board at the end of the round
     def remove_object(self, game_object):
