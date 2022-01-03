@@ -73,7 +73,7 @@ class Map:
                             break
         return 0
 
-    def generate_map(self):
+    def generate_map(self, board):
         foundRobot = False
         moveCost = 1
         x = board.objective.coord.x
