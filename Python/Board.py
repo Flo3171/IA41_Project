@@ -599,3 +599,11 @@ class Board:
                         robot.reset_pos()
                         self._cases[robot.start_pos.x][robot.start_pos.y].place_bot(robot)
                         self._cases[i][j].remove_bot()
+
+    def can_go_to_case(self, x_to_reach, y_to_reach, robot):
+        for d in self._cases[robot.pos.x,robot.pos.y].destination.case:
+            if d.pos.x == x_to_reach and d.pos.y == y_to_reach:
+                return True
+        return False
+
+
