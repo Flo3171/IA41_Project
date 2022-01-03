@@ -55,19 +55,6 @@ IMG_YELLOW_BEACON = PhotoImage(file="files/items/YellowBeacon.png")
 
 class Window:
 
-    def __init__(self, height, width):
-        _window.geometry(str(height)+"x"+str(width))
-        _window.resizable(width=False, height=False)
-        canvas.config(width=width, height=height)
-        BNorth.place(x=150 , y=80, anchor= "center")
-        BSouth.place(x=150 , y=160, anchor= "center")
-        BEast.place(x=200 , y=120, anchor= "center")
-        BWest.place(x=100 , y=120, anchor= "center")
-        BRed.place(x=40 , y=200, anchor= "center")
-        BBlue.place(x=110 , y=200, anchor= "center")
-        BGreen.place(x=180 , y=200, anchor= "center")
-        BYellow.place(x=250 , y=200, anchor= "center")
-
     def __init__(self):
         self._board = Board.Board()
         self._board.generate_board()
@@ -76,6 +63,11 @@ class Window:
         canvas.config(width=16*img_size+(decal*2), height=16*img_size+(decal*2))
 
         self._color = None
+        self.R_robot = None
+        self.B_robot = None
+        self.G_robot = None
+        self.Y_robot = None
+
 
         BNorth.place(x=150 , y=80, anchor= "center")
         BSouth.place(x=150 , y=160, anchor= "center")
@@ -105,20 +97,21 @@ class Window:
             for j in range(16):
                 if self._board.case( i, j).has_game_object():
                     Window.place_objective(i,j,self._board.case( i, j))
+        for i in range(16):
+            for j in range(16):
                 if self._board.case(i,j).has_bot():
-                    Window.place_robot(i,j,self._board.case( i, j))
+                    Window.place_robot(self, i, j, self._board.case(i, j))
         Window.button_config(self)
 
-    @staticmethod
-    def place_robot(x, y, case):
+    def place_robot(self, x, y, case):
         if case.bot().color() == "Red":
-            R_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_R_robot , anchor = "center" )
+            self.R_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_R_robot , anchor = "center" )
         if case.bot().color() == "Blue":
-            B_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_B_robot , anchor = "center" )
+            self.B_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_B_robot , anchor = "center" )
         if case.bot().color() == "Green":
-            G_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_G_robot , anchor = "center" )
+            self.G_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_G_robot , anchor = "center" )
         if case.bot().color() == "Yellow":
-            Y_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_Y_robot , anchor = "center" )
+            self.Y_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_Y_robot , anchor = "center" )
 
     @staticmethod
     def place_cell(x, y):
@@ -175,28 +168,58 @@ class Window:
 
     def move_N(self):
         if self._color is not None:
-            #print(self._color)
-            #print(self._board.robot(self._color).pos().x)
-            #print(self._board.robot(self._color).pos().x)
-            cord =self._board.case(self._board.robot(self._color).pos().x,self._board.robot(self._color).pos().y)
-            print(cord.destination(Direction.Direction.NORTH))
-            #self._board.move_bot(self._color,cord.destination(Direction.Direction.NORTH)
-        #self._board.move_valid_bot(self._board.robot(self._color), Direction.Direction.NORTH):
+            cord =self._board.case(self._board.robot(self._color).pos().x, self._board.robot(self._color).pos().y).destination(Direction.Direction.NORTH).case.coord
+            self._board.move_bot(self._color, cord)
+            if self._color == "Red":
+                canvas.coords(self.R_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Blue":
+                canvas.coords(self.B_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Green":
+                canvas.coords(self.G_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Yellow":
+                canvas.coords(self.Y_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
         self._color = None
 
     def move_S(self):
         if self._color is not None:
-            print(self._color)
+            cord =self._board.case(self._board.robot(self._color).pos().x, self._board.robot(self._color).pos().y).destination(Direction.Direction.SOUTH).case.coord
+            self._board.move_bot(self._color, cord)
+            if self._color == "Red":
+                canvas.coords(self.R_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Blue":
+                canvas.coords(self.B_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Green":
+                canvas.coords(self.G_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Yellow":
+                canvas.coords(self.Y_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
         self._color = None
 
     def move_E(self):
         if self._color is not None:
-            print(self._color)
+            cord =self._board.case(self._board.robot(self._color).pos().x, self._board.robot(self._color).pos().y).destination(Direction.Direction.EAST).case.coord
+            self._board.move_bot(self._color, cord)
+            if self._color == "Red":
+                canvas.coords(self.R_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Blue":
+                canvas.coords(self.B_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Green":
+                canvas.coords(self.G_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Yellow":
+                canvas.coords(self.Y_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
         self._color = None
 
     def move_W(self):
         if self._color is not None:
-            print(self._color)
+            cord =self._board.case(self._board.robot(self._color).pos().x, self._board.robot(self._color).pos().y).destination(Direction.Direction.WEST).case.coord
+            self._board.move_bot(self._color, cord)
+            if self._color == "Red":
+                canvas.coords(self.R_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Blue":
+                canvas.coords(self.B_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Green":
+                canvas.coords(self.G_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
+            if self._color == "Yellow":
+                canvas.coords(self.Y_robot, cord.x * img_size + img_size/2 + decal, cord.y * img_size + img_size/2 + decal)
         self._color = None
 
     def pick_R(self):
@@ -219,6 +242,10 @@ class Window:
 
     def button_config(self):
         BNorth.config(command=self.move_N)
+        BSouth.config(command=self.move_S)
+        BWest.config(command=self.move_W)
+        BEast.config(command=self.move_E)
+
         BRed.config(command=self.pick_R)
         BBlue.config(command=self.pick_B)
         BGreen.config(command=self.pick_G)

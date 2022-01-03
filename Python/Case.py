@@ -55,7 +55,6 @@ class Case:
         return self._destination
 
     def destination(self, direction):
-        print(len(self._destination))
         for i in range(len(self._destination)):
             if self._destination[i].direction == direction:
                 return self._destination[i]
