@@ -22,6 +22,7 @@ BBlue = Button(canvas2, text="", bg="blue", width=5)
 BGreen = Button(canvas2, text="", bg="green", width=5)
 BYellow = Button(canvas2, text="", bg="yellow", width=5)
 BSolve = Button(canvas2, text="SOLVE NEXT STEP", bg="Brown")
+BResolve = Button(canvas2, text="RESOLVE NEXT STEP", bg="Brown")
 LColor = Label(canvas2, text="Color select", bg="grey")
 
 IMG_R_robot = PhotoImage(file="files/robots/RedRobot.png")
@@ -76,6 +77,7 @@ class Window:
         BGreen.place(x=180, y=200, anchor="center")
         BYellow.place(x=250, y=200, anchor="center")
         BSolve.place(x=150, y=280, anchor="center")
+        BResolve.place(x=150, y=320, anchor="center")
         LColor.place(x=150, y=30, anchor="center")
 
     @staticmethod
@@ -301,6 +303,16 @@ class Window:
         y = self._board.robot(col).pos.y * img_size + img_size / 2 + decal
         cord = self._board.case(self._board.robot(col).pos.x,
                                 self._board.robot(col).pos.y).destination(dest).case.coord
+        canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                           cord.y * img_size + img_size / 2 + decal, width=2, fill=col)
+
+    def resolve(self):
+        col = "Red"  # récupère la couleur du robot à jouer
+        dest = Direction.Direction.NORTH  # rècupère la destination à appliquer
+        x = self._board.robot(col).pos.x * img_size + img_size / 2 + decal
+        y = self._board.robot(col).pos.y * img_size + img_size / 2 + decal
+        cord = self._board.case(self._board.robot(col).pos.x,
+                                self._board.robot(col).pos.y).destination(dest).case.coord
         self._board.move_bot(col, cord)
         canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
                            cord.y * img_size + img_size / 2 + decal, width=2, fill=col)
@@ -317,6 +329,7 @@ class Window:
             canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                           cord.y * img_size + img_size / 2 + decal)
 
+
     def button_config(self):
         BNorth.config(command=self.move_n)
         BSouth.config(command=self.move_s)
@@ -329,3 +342,4 @@ class Window:
         BYellow.config(command=self.pick_y)
 
         BSolve.config(command=self.solve)
+        BResolve.config(command=self.resolve)
