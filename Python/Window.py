@@ -21,6 +21,8 @@ BRed = Button(canvas2, text="", bg="red", width=5)
 BBlue = Button(canvas2, text="", bg="blue", width=5)
 BGreen = Button(canvas2, text="", bg="green", width=5)
 BYellow = Button(canvas2, text="", bg="yellow", width=5)
+BSolve = Button(canvas2, text="SOLVE NEXT STEP", bg="Brown")
+LColor = Label(canvas2, text="Color select", bg="grey")
 
 IMG_R_robot = PhotoImage(file="files/robots/RedRobot.png")
 IMG_B_robot = PhotoImage(file="files/robots/BlueRobot.png")
@@ -77,6 +79,8 @@ class Window:
         BBlue.place(x=110, y=200, anchor="center")
         BGreen.place(x=180, y=200, anchor="center")
         BYellow.place(x=250, y=200, anchor="center")
+        BSolve.place(x=150, y=280, anchor="center")
+        LColor.place(x=150, y=30, anchor="center")
 
     def launch(self):
         _window.mainloop()
@@ -228,7 +232,6 @@ class Window:
                                    cord.y * img_size + img_size / 2 + decal, width=2, fill="Yellow")
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
-        self._color = None
 
     def move_S(self):
         if self._color is not None:
@@ -258,7 +261,6 @@ class Window:
                                    cord.y * img_size + img_size / 2 + decal, width=2, fill="Yellow")
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
-        self._color = None
 
     def move_E(self):
         if self._color is not None:
@@ -288,7 +290,6 @@ class Window:
                                    cord.y * img_size + img_size / 2 + decal, width=2, fill="Yellow")
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
-        self._color = None
 
     def move_W(self):
         if self._color is not None:
@@ -318,19 +319,22 @@ class Window:
                                    cord.y * img_size + img_size / 2 + decal, width=2, fill="Yellow")
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
-        self._color = None
 
     def pick_R(self):
         self._color = "Red"
+        LColor.config(bg="Red")
 
     def pick_B(self):
         self._color = "Blue"
+        LColor.config(bg="Blue")
 
     def pick_G(self):
         self._color = "Green"
+        LColor.config(bg="Green")
 
     def pick_Y(self):
         self._color = "Yellow"
+        LColor.config(bg="Yellow")
 
     def solve(self):
         ia = PathSolver.PathSolver(None, None, b)
@@ -350,3 +354,5 @@ class Window:
         BBlue.config(command=self.pick_B)
         BGreen.config(command=self.pick_G)
         BYellow.config(command=self.pick_Y)
+
+        BSolve.config(command=self.solve)
