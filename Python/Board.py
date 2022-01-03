@@ -7,7 +7,7 @@ import Robot
 import Destination
 import random
 import Objective
-import PathSolver as ps
+import PathSolver
 
 
 class Board:
@@ -31,6 +31,9 @@ class Board:
             if self._robots[i].color() == objective_color:
                 return self._robots[i]
 
+    @property
+    def objective(self):
+        return self._objective
 
     def case(self, i, j):
         return self._cases[i][j]
@@ -373,7 +376,7 @@ class Board:
 
         self._objective = current_objective
 
-        # Then, we store in each case of the plate, the case accesible in 1 move
+        # Then, we store in each case of the plate, the case accessible in 1 move
         for j in range(16):
             for i in range(16):
                 if (j < 7 or j > 8) or (i < 7 or i > 8):
@@ -391,25 +394,23 @@ class Board:
         ]
         can_go = []
 
-        for dir in directions:
+        for direction in directions:
             actual_x = x
             actual_y = y
             # While the actual case has no wall in the direction we follow
-            while not self._cases[actual_x][actual_y].has_walls_in_dir(dir):
+            while not self._cases[actual_x][actual_y].has_walls_in_dir(direction):
                 # If the next case has a bot, we stop
-                if (self.case(actual_x, actual_y).has_walls_in_dir(dir) and
-                        self._cases[actual_x + Direction.get_x(dir)][
-                            actual_y + Direction.get_y(dir)
-                        ].bot
-                        != None
-                ):
+                if (self.case(actual_x, actual_y).has_walls_in_dir(direction) and
+                        self._cases[actual_x + Direction.get_x(direction)][
+                        actual_y + Direction.get_y(direction)
+                        ].has_bot()):
                     break
-                # If their is no obstactle, we increase the test coordinates and we loop
-                actual_x += Direction.get_x(dir)
-                actual_y += Direction.get_y(dir)
+                # If there is no obstacle, we increase the test coordinates, and we loop
+                actual_x += Direction.get_x(direction)
+                actual_y += Direction.get_y(direction)
 
             # When we exit the loop, we create a new destination with the last test coordinates
-            can_go.append(Destination.Destination(dir, self._cases[actual_x][actual_y]))
+            can_go.append(Destination.Destination(direction, self._cases[actual_x][actual_y]))
 
         return can_go
 
@@ -420,9 +421,7 @@ class Board:
                     return Coord.Coord(j, i)
         return None
 
-    @property
-    def objective(self):
-        return self._objective
+
 
     # Methods to compute for each case the cases on which we can go in one move
     def next_states(self, x, y):
@@ -513,9 +512,9 @@ class Board:
         for i in range(16):
             for j in range(16):
                 if self._cases[i][j].has_bot():
-                    if self._cases[i][j]._bot._color == color:
-                        robot = self._cases[i][j]._bot
-                        self._cases[i][j]._bot.move(coord)
+                    if self._cases[i][j].bot.color == color:
+                        robot = self._cases[i][j].bot
+                        self._cases[i][j].bot.move(coord)
                         self._cases[coord.x][coord.y].place_bot(robot)
                         self._cases[i][j].remove_bot()
                         break
@@ -525,7 +524,7 @@ class Board:
 
     # Method to move a bot after finding a valid place
     def move_valid_bot(self, robot, direction):
-        s = ps.PathSolver(None, None, self)
+        s = PathSolver.PathSolver(None, None, self)
         x = robot.pos().x()
         y = robot.pos().y()
         if direction == Direction.Direction.NORTH:
@@ -570,10 +569,10 @@ class Board:
         for i in range(16):
             for j in range(16):
                 if self._cases[i][j].has_bot():
-                    robot = self._cases[i][j]._bot
+                    robot = self._cases[i][j].bot
                     if (
-                            robot._pos.x != robot._start_pos.x
-                            or robot._pos.y != robot._start_pos.y
+                            robot.pos.x != robot.start_pos.x
+                            or robot.pos.y != robot.start_pos.y
                     ):
                         robot.reset_pos()
                         self._cases[robot.start_pos.x][robot.start_pos.y].place_bot(robot)

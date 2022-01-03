@@ -10,7 +10,6 @@ class Case:
     def coord(self):
         return self._coord
 
-
     def game_object(self):
         return self._gameObject
 
@@ -36,14 +35,13 @@ class Case:
         else:
             return True
 
-    def has_walls_in_dir(self, dir):
+    def has_walls_in_dir(self, direction):
         for w in self._walls:
-            if dir == w.dir:
+            if direction == w.dir:
                 return True
         return False
 
-
-
+    @property
     def bot(self):
         return self._bot
 

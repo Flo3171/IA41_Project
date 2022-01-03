@@ -36,10 +36,10 @@ class Map:
                     nextTo_i = 1
                 else:
                     nextTo_j = 1
-                if new_i >= 0 and new_i <= 15 and new_j >= 0 and new_j <= 15:
+                if 0 <= new_i <= 15 and 0 <= new_j <= 15:
                     if 0 <= new_i_plus <= 15 and 0 <= new_j_plus <= 15:
-                        if board._cases[new_i][new_j]._bot != None:
-                            if board._cases[new_i][new_j]._bot == self._playerBot:
+                        if board.case(new_i, new_j).has_bot():
+                            if board.case(new_i, new_j).bot == self._playerBot:
                                 self.add_value(new_i, new_j, move_cost)
                                 return move_cost
                         elif (not board.case(new_i, new_j).has_walls()) and (
@@ -54,12 +54,12 @@ class Map:
                                 board.case(new_i_plus, new_j_plus).bot() is not None):
                             break
                     elif new_i == 0 or new_i == 15 or new_j == 0 or new_j == 15:
-                        if board._cases[new_i][new_j]._bot != None:
-                            if board._cases[new_i][new_j]._bot == self._playerBot:
+                        if board.case(new_i, new_j).has_bot():
+                            if board.case(new_i, new_j).bot == self._playerBot:
                                 self.add_value(new_i, new_j, move_cost)
                                 return move_cost
                         elif (board.case(new_i, new_j).has_walls_in_dir(d)) and (
-                                board.case(new_i, new_j).bot() is None):
+                                board.case(new_i, new_j).has_bot()):
                             self.add_value(new_i, new_j, move_cost)
                             break
                         elif (board.case(new_i + nextTo_i, new_j + nextTo_j).bot() is not None) or (
@@ -71,8 +71,8 @@ class Map:
     def generate_map(self, board):
         foundRobot = False
         moveCost = 1
-        x = board._objective._coord._x
-        y = board._objective._coord._y
+        x = board.objective.coord.x
+        y = board.objective.coord.y
         self.add_value(x, y, 50)  # Value assigned to destination, that shouldn't be reached otherwise
         while not foundRobot:
             for i in range(15):
@@ -83,6 +83,3 @@ class Map:
                             foundRobot = True
                             self._mapScore = a
             moveCost += 1
-
-    def map_score(self):
-        return self._mapScore

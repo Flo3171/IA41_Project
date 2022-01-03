@@ -4,7 +4,7 @@ class Robot:
         self._pos = start_pos
         self._startPos = start_pos
 
-
+    @property
     def color(self):
         return self._color
 
@@ -12,7 +12,7 @@ class Robot:
     def start_pos(self):
         return self._startPos
 
-
+    @property
     def pos(self):
         return self._pos
 
@@ -21,6 +21,8 @@ class Robot:
 
     def reset_pos(self):
         self._pos = self._startPos
+
+
 """
     def __eq__(self, other):
         if (self._color == other._color) and (self._pos == other._pos) and (self._startPos == other._startPos):

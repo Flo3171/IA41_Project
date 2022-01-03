@@ -12,20 +12,20 @@ class PathSolver:
         self._defaultBoard = copy.deepcopy(board)
         self._currentBoard = copy.deepcopy(board)
         self._testBoard = copy.deepcopy(board)
-        self._robots = copy.deepcopy(board._robots)
+        self._robots = copy.deepcopy(board.robots)
 
-        if board._objective._game_object.value == 0:
+        if board.objective.game_object.value == 0:
             objective_color = None
-        elif board._objective._game_object.value % 4 == 1:
+        elif board.objective.game_object.value % 4 == 1:
             objective_color = "Blue"
-        elif board._objective._game_object.value % 4 == 2:
+        elif board.objective.game_object.value % 4 == 2:
             objective_color = "Red"
-        elif board._objective._game_object.value % 4 == 3:
+        elif board.objective.game_object.value % 4 == 3:
             objective_color = "Green"
         else:
             objective_color = "Yellow"
         for i in range(4):
-            if self._robots[i]._color == objective_color:
+            if self._robots[i].color == objective_color:
                 self._playerBot = self._robots[i]
 
     @property
@@ -106,7 +106,7 @@ class PathSolver:
         defaultMap = Map.Map(self._playerBot)
         defaultMap.generate_map(self._currentBoard)
         newPlayerPos = self.move_current_bot(defaultMap)
-        defaultScore = defaultMap.map_score()
+        defaultScore = defaultMap.map_score
         isRobotBetter = 0
         for r in self._robots:
             if r != self._playerBot:
