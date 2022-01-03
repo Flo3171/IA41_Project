@@ -43,37 +43,31 @@ class PathSolver:
     def board(self):
         return self._currentBoard
 
+    def check_obstacle(self, direction, i, j, i_move, j_move):
+        if (self._defaultBoard.case(i + i_move, j + j_move).has_wall_in_dir(direction)) or self._defaultBoard.case(i + i_move, j + j_move).has_bot():
+            return True
+
     def check_case_to_stop(self, i, j, d):
         if d == 'up':
             if j == 0:
                 return True
-            elif (
-                    self._defaultBoard.case(i - 1, j).has_wall_in_dir(
-                        Direction.Direction.NORTH)) or self._defaultBoard.case(
-                i - 1, j).has_bot():
-                return True
+            else:
+                return self.check_obstacle(Direction.Direction.SOUTH, i, j, -1, 0)
         elif d == 'down':
             if j == 15:
                 return True
-            elif (
-                    self._defaultBoard.cases(i + 1, j).has_wall_in_dir(
-                        Direction.Direction.NORTH)) or self._defaultBoard.case(
-                i + 1, j).has_bot():
-                return True
+            else:
+                return self.check_obstacle(Direction.Direction.NORTH, i, j, 1, 0)
         elif d == 'left':
             if i == 0:
                 return True
-            elif (
-                    self._defaultBoard.cases(i, j - 1).has_wall_in_dir(
-                        Direction.Direction.EAST)) or self._defaultBoard.case(i,
-                                                                              j - 1).has_bot():
-                return True
+            else:
+                return self.check_obstacle(Direction.Direction.EAST, i, j, 0, -1)
         elif d == 'right':
             if i == 15:
                 return True
-            elif ([-1, 0] in self._defaultBoard.case(i, j + 1).has_wall_in_dir(
-                    Direction.Direction.WEST)) or self._defaultBoard.case(i, j + 1).has_bot():
-                return True
+            else:
+                return self.check_obstacle(Direction.Direction.WEST, i, j, 0, 1)
         return False
 
     def new_choice(self, test_score, default_score, new_robots, is_robot_better):
