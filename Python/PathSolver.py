@@ -67,11 +67,11 @@ class PathSolver:
             return default_score
 
     def replace_bots(self, new_i, new_j, r):
-        newRobots = copy.deepcopy(self._robots)
-        for rob in newRobots:
+        new_robots = copy.deepcopy(self._robots)
+        for rob in new_robots:
             if rob == r:
                 rob._pos = [new_i, new_j]
-                return newRobots
+                return new_robots
 
     def move_current_bot(self, current_map):
         x = self.player_bot().pos().x()
@@ -84,12 +84,28 @@ class PathSolver:
                     self._currentBoard.case(i, j).place_bot(self._playerBot)
                     return [i, j]
 
+    def keep_searching(self, score):
+        if score > 1:
+            self._nextState.choose_next_state()
+        else:
+            x = self._currentBoard.destination().coord().x()
+            y = self._currentBoard.destination().coord().y()
+            i = self._playerBot.pos.x
+            j = self._playerBot.pos.y
+            last_board = copy.deepcopy(self._currentBoard)
+            last_board.case(i, j).remove_bot()
+            last_board.case(x, y).place_bot(self._playerBot)
+            self._playerBot.pos.x(x)
+            self._playerBot.pos.y(y)
+            last_move = PathSolver(self._nextState, None, last_board)
+            self._nextState._nextState = last_move
+
     def choose_next_state(self):
-        defaultMap = Map.Map(self._playerBot)
-        defaultMap.generate_map(self._currentBoard)
-        newPlayerPos = self.move_current_bot(defaultMap)
-        defaultScore = defaultMap.map_score
-        isRobotBetter = 0
+        default_map = Map.Map(self._playerBot)
+        default_map.generate_map(self._currentBoard)
+        new_player_pos = self.move_current_bot(default_map)
+        default_score = default_map.map_score
+        is_robot_better = 0
         for r in self._robots:
             if r != self._playerBot:
                 for d in self._directions:
@@ -103,13 +119,13 @@ class PathSolver:
                         if new_j != j:
                             self._testBoard.case(i, j).remove_bot()
                             self._testBoard.case(new_i, new_j).place_bot(r)
-                            newRobots = self.replace_bots(new_i, new_j, r)
-                            testMap = Map.Map(self._playerBot)
-                            testMap.generate_map(self._testBoard)
-                            testScore = testMap.map_score()
-                            defaultScore = self.new_choice(testScore, defaultScore, newRobots, isRobotBetter)
-                            if defaultScore == testScore:
-                                isRobotBetter = 1
+                            new_robots = self.replace_bots(new_i, new_j, r)
+                            test_map = Map.Map(self._playerBot)
+                            test_map.generate_map(self._testBoard)
+                            test_score = test_map.map_score()
+                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better)
+                            if default_score == test_score:
+                                is_robot_better = 1
                             self._testBoard = copy.deepcopy(self._defaultBoard)
                     elif d == 'down':
                         while not self.check_case_to_stop(new_i, new_j, 'down'):
@@ -117,13 +133,13 @@ class PathSolver:
                         if new_j != j:
                             self._testBoard.case(i, j).remove_bot()
                             self._testBoard.case(new_i, new_j).place_bot(r)
-                            newRobots = self.replace_bots(new_i, new_j, r)
-                            testMap = Map.Map(self._playerBot)
-                            testMap.generate_map(self._testBoard)
-                            testScore = testMap.map_score()
-                            defaultScore = self.new_choice(testScore, defaultScore, newRobots, isRobotBetter)
-                            if defaultScore == testScore:
-                                isRobotBetter = 1
+                            new_robots = self.replace_bots(new_i, new_j, r)
+                            test_map = Map.Map(self._playerBot)
+                            test_map.generate_map(self._testBoard)
+                            test_score = test_map.map_score()
+                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better)
+                            if default_score == test_score:
+                                is_robot_better = 1
                             self._testBoard = copy.deepcopy(self._defaultBoard)
                     elif d == 'left':
                         while not self.check_case_to_stop(new_i, new_j, 'left'):
@@ -131,13 +147,13 @@ class PathSolver:
                         if new_i != i:
                             self._testBoard.case(i, j).remove_bot()
                             self._testBoard.case(new_i, new_j).place_bot(r)
-                            newRobots = self.replace_bots(new_i, new_j, r)
-                            testMap = Map.Map(self._playerBot)
-                            testMap.generate_map(self._testBoard)
-                            testScore = testMap.map_score()
-                            defaultScore = self.new_choice(testScore, defaultScore, newRobots, isRobotBetter)
-                            if defaultScore == testScore:
-                                isRobotBetter = 1
+                            new_robots = self.replace_bots(new_i, new_j, r)
+                            test_map = Map.Map(self._playerBot)
+                            test_map.generate_map(self._testBoard)
+                            test_score = test_map.map_score()
+                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better)
+                            if default_score == test_score:
+                                is_robot_better = 1
                             self._testBoard = copy.deepcopy(self._defaultBoard)
                     elif d == 'right':
                         while not self.check_case_to_stop(new_i, new_j, 'right'):
@@ -145,33 +161,22 @@ class PathSolver:
                         if new_i != i:
                             self._testBoard.case(i, j).remove_bot()
                             self._testBoard.case(new_i, new_j).place_bot(r)
-                            newRobots = self.replace_bots(new_i, new_j, r)
-                            testMap = Map.Map(self._playerBot)
-                            testMap.generate_map(self._testBoard)
-                            testScore = testMap.map_score()
-                            defaultScore = self.new_choice(testScore, defaultScore, newRobots, isRobotBetter)
-                            if defaultScore == testScore:
-                                isRobotBetter = 1
+                            new_robots = self.replace_bots(new_i, new_j, r)
+                            test_map = Map.Map(self._playerBot)
+                            test_map.generate_map(self._testBoard)
+                            test_score = test_map.map_score()
+                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better)
+                            if default_score == test_score:
+                                is_robot_better = 1
                             self._testBoard = copy.deepcopy(self._defaultBoard)
 
-        i, j = newPlayerPos
+        i, j = new_player_pos
         if self._currentBoard.cases(i, j).bot() == self._playerBot:
             self._currentBoard._robots = self.replace_bots(i, j, self._playerBot)
 
-        nextMove = PathSolver(self, None, self._currentBoard)
-        self._nextState = nextMove
+        next_move = PathSolver(self, None, self._currentBoard)
+        self._nextState = next_move
 
-        if defaultScore > 1:
-            self._nextState.choose_next_state()
-        else:
-            x = self._currentBoard.destination().coord().x()
-            y = self._currentBoard.destination().coord().y()
-            i = self._playerBot.pos.x
-            j = self._playerBot.pos.y
-            lastBoard = copy.deepcopy(self._currentBoard)
-            lastBoard.case(i, j).remove_bot()
-            lastBoard.case(x, y).place_bot(self._playerBot)
-            self._playerBot.pos.x(x)
-            self._playerBot.pos.y(y)
-            lastMove = PathSolver(self._nextState, None, lastBoard)
-            self._nextState._nextState = lastMove
+        self.keep_searching(default_score)
+
+
