@@ -1,6 +1,7 @@
 import Map
 import copy
 import Direction
+import Move
 
 
 class PathSolver:
@@ -14,6 +15,7 @@ class PathSolver:
         self._testBoard = copy.deepcopy(board)
         self._robots = copy.deepcopy(board.robots)
         self._playerBot = board.target_robot
+        self._move = Move.Move(self._playerBot, None)
 
 
 
@@ -31,6 +33,9 @@ class PathSolver:
     @property
     def board(self):
         return self._currentBoard
+
+    def move(self):
+        return self._move
 
     def check_obstacle(self, direction, i, j, i_move, j_move):
         if (self._defaultBoard.case(i + i_move, j + j_move).has_wall_in_dir(direction)) or self._defaultBoard.case(i + i_move, j + j_move).has_bot():
@@ -59,10 +64,12 @@ class PathSolver:
                 return self.check_obstacle(Direction.Direction.WEST, i, j, 0, 1)
         return False
 
-    def new_choice(self, test_score, default_score, new_robots, is_robot_better):
+    def new_choice(self, test_score, default_score, new_robots, is_robot_better, robot, direction):
         if test_score <= default_score - 1 + is_robot_better:
             self._currentBoard = copy.deepcopy(self._testBoard)
             self._currentBoard._robots = copy.deepcopy(new_robots)
+            self._move._robot = robot
+            self._move._direction = direction
             return test_score
         else:
             return default_score
@@ -74,6 +81,16 @@ class PathSolver:
                 rob._pos = [new_i, new_j]
                 return new_robots
 
+    def get_moved_direction(self, old_x, old_y, new_x, new_y):
+        if new_x < old_x:
+            return Direction.Direction.NORTH
+        elif new_x > old_x:
+            return Direction.Direction.SOUTH
+        elif new_y < old_y:
+            return Direction.Direction.WEST
+        else:
+            return Direction.Direction.EAST
+
     def move_current_bot(self, current_map):
         x = self.player_bot().pos().x()
         y = self.player_bot().pos().y()
@@ -83,6 +100,7 @@ class PathSolver:
                         self._currentBoard.case(i, j) in self._currentBoard.case(x, y).destination()):
                     self._currentBoard.case(x, y).remove_bot()
                     self._currentBoard.case(i, j).place_bot(self._playerBot)
+                    self._move._direction = self.get_moved_direction(x, y, i, j)
                     return [i, j]
 
     def keep_searching(self, score):
@@ -124,7 +142,7 @@ class PathSolver:
                             test_map = Map.Map(self._playerBot)
                             test_map.generate_map(self._testBoard)
                             test_score = test_map.map_score()
-                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better)
+                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better, r, Direction.Direction.NORTH)
                             if default_score == test_score:
                                 is_robot_better = 1
                             self._testBoard = copy.deepcopy(self._defaultBoard)
@@ -138,7 +156,7 @@ class PathSolver:
                             test_map = Map.Map(self._playerBot)
                             test_map.generate_map(self._testBoard)
                             test_score = test_map.map_score()
-                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better)
+                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better, r, Direction.Direction.SOUTH)
                             if default_score == test_score:
                                 is_robot_better = 1
                             self._testBoard = copy.deepcopy(self._defaultBoard)
@@ -152,7 +170,7 @@ class PathSolver:
                             test_map = Map.Map(self._playerBot)
                             test_map.generate_map(self._testBoard)
                             test_score = test_map.map_score()
-                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better)
+                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better, r, Direction.Direction.WEST)
                             if default_score == test_score:
                                 is_robot_better = 1
                             self._testBoard = copy.deepcopy(self._defaultBoard)
@@ -166,7 +184,7 @@ class PathSolver:
                             test_map = Map.Map(self._playerBot)
                             test_map.generate_map(self._testBoard)
                             test_score = test_map.map_score()
-                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better)
+                            default_score = self.new_choice(test_score, default_score, new_robots, is_robot_better, r, Direction.Direction.WEST)
                             if default_score == test_score:
                                 is_robot_better = 1
                             self._testBoard = copy.deepcopy(self._defaultBoard)
