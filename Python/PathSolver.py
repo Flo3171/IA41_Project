@@ -14,19 +14,7 @@ class PathSolver:
         self._testBoard = copy.deepcopy(board)
         self._robots = copy.deepcopy(board.robots)
 
-        if board.objective.game_object.value == 0:
-            objective_color = None
-        elif board.objective.game_object.value % 4 == 1:
-            objective_color = "Blue"
-        elif board.objective.game_object.value % 4 == 2:
-            objective_color = "Red"
-        elif board.objective.game_object.value % 4 == 3:
-            objective_color = "Green"
-        else:
-            objective_color = "Yellow"
-        for i in range(4):
-            if self._robots[i].color == objective_color:
-                self._playerBot = self._robots[i]
+
 
     @property
     def robots(self):
@@ -178,12 +166,12 @@ class PathSolver:
         else:
             x = self._currentBoard.destination().coord().x()
             y = self._currentBoard.destination().coord().y()
-            i = self._playerBot.pos().x()
-            j = self._playerBot.pos().y()
+            i = self._playerBot.pos.x
+            j = self._playerBot.pos.y
             lastBoard = copy.deepcopy(self._currentBoard)
             lastBoard.case(i, j).remove_bot()
             lastBoard.case(x, y).place_bot(self._playerBot)
-            self._playerBot.pos().x(x)
-            self._playerBot.pos().y(y)
+            self._playerBot.pos.x(x)
+            self._playerBot.pos.y(y)
             lastMove = PathSolver(self._nextState, None, lastBoard)
             self._nextState._nextState = lastMove

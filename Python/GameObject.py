@@ -1,7 +1,7 @@
-from enum import Enum
+import enum
 
 
-class GameObject(Enum):
+class GameObject(enum.Enum):
 
     VORTEX = 0
     BLUE_BALL = 1

@@ -17,6 +17,7 @@ class Board:
         self._cases = [[Case.Case(Coord.Coord(j, i)) for i in range(16)] for j in range(16)]
         self._robots = []
         self._objective = None
+        self._target_robot = None
 
     @property
     def cases(self):
@@ -37,6 +38,36 @@ class Board:
 
     def case(self, i, j):
         return self._cases[i][j]
+
+    @property
+    def target_robot(self):
+        return self._target_robot
+
+    def choose_objective(self):
+        # set the objective to reach with the robot
+
+        game_object = random.choice(list(GameObject.GameObject))
+        while game_object == GameObject.GameObject.VORTEX:
+            game_object = random.choice(list(GameObject.GameObject))
+        self._objective = Objective.Objective(self.find_game_object(game_object), game_object)
+
+        self.update_target_robot()
+
+    def update_target_robot(self):
+        if self.objective.game_object.value == 0:
+            objective_color = None
+        elif self.objective.game_object.value % 4 == 1:
+            objective_color = "Blue"
+        elif self.objective.game_object.value % 4 == 2:
+            objective_color = "Red"
+        elif self.objective.game_object.value % 4 == 3:
+            objective_color = "Green"
+        else:
+            objective_color = "Yellow"
+
+        for i in range(4):
+            if self._robots[i].color == objective_color:
+                self._target_robot = self._robots[i]
 
     def generate_board(self):
 
@@ -369,13 +400,6 @@ class Board:
             self._robots.append(robot)
             board_case.place_bot(robot)
 
-        # set the objective to reach with the robot
-        current_objective = possible_objective[random.randint(0, 16)]
-        while current_objective == GameObject.GameObject.VORTEX:
-            current_objective = possible_objective.index(random.randint(0, 16))
-
-        self._objective = current_objective
-
         # Then, we store in each case of the plate, the case accessible in 1 move
         for j in range(16):
             for i in range(16):
@@ -420,8 +444,6 @@ class Board:
                 if self._cases[i][j].game_object() == game_object:
                     return Coord.Coord(j, i)
         return None
-
-
 
     # Methods to compute for each case the cases on which we can go in one move
     def next_states(self, x, y):

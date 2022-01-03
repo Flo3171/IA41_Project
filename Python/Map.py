@@ -3,13 +3,14 @@ import numpy as np
 
 class Map:
 
-    def __init__(self, player_bot):
+    def __init__(self, board):
         self._matrix = []
         self._matrix = [[0 for _ in range(16)] for _ in range(16)]  # matrix full of 0
         self._directions = [np.array([0, 1]), np.array([0, -1]), np.array([1, 0]),
                             np.array([-1, 0])]  # down up right left
-        self._playerBot = player_bot  # Robot that must reach destination
+        self._playerBot = None  # Robot that must reach destination
         self._mapScore = 0  # Less expensive path
+        self._board = board
 
     def matrix(self, i, j):
         return self._matrix[i][j]
@@ -17,6 +18,10 @@ class Map:
     @property
     def map_score(self):
         return self._mapScore
+
+    @property
+    def board(self):
+        return self._board
 
     def add_value(self, i, j, move_cost):
         if self._matrix[i][j] == 0:
@@ -68,7 +73,7 @@ class Map:
                             break
         return 0
 
-    def generate_map(self, board):
+    def generate_map(self):
         foundRobot = False
         moveCost = 1
         x = board.objective.coord.x
