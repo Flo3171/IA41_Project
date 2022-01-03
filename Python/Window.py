@@ -1,8 +1,8 @@
 from tkinter import *
+
+import Board
 import Direction
 import GameObject
-import Board
-import PathSolver
 
 img_size = 38
 decal = 0
@@ -28,11 +28,6 @@ IMG_R_robot = PhotoImage(file="files/robots/RedRobot.png")
 IMG_B_robot = PhotoImage(file="files/robots/BlueRobot.png")
 IMG_G_robot = PhotoImage(file="files/robots/GreenRobot.png")
 IMG_Y_robot = PhotoImage(file="files/robots/YellowRobot.png")
-
-"""R_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_R_robot , anchor = "center" )
-B_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_B_robot , anchor = "center" )
-G_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_G_robot , anchor = "center" )
-Y_robot = canvas.create_image (0*img_size +img_size/2 +decal , 0*img_size +img_size/2+decal, image = IMG_Y_robot , anchor = "center" )"""
 
 IMG_cell = PhotoImage(file="files/board/CaseX38.png")
 IMG_H_Wall = PhotoImage(file="files/board/VWallX38.png")
@@ -61,6 +56,7 @@ class Window:
     def __init__(self):
         self._board = Board.Board()
         self._board.generate_board()
+        self._board.choose_objective()
         _window.geometry(str(16 * img_size + 300 + decal) + "x" + str(16 * img_size + decal))
         _window.resizable(width=False, height=False)
         canvas.config(width=16 * img_size + (decal * 2), height=16 * img_size + (decal * 2))
@@ -82,10 +78,12 @@ class Window:
         BSolve.place(x=150, y=280, anchor="center")
         LColor.place(x=150, y=30, anchor="center")
 
-    def launch(self):
+    @staticmethod
+    def launch():
         _window.mainloop()
 
-    def setsize(self, height, width):
+    @staticmethod
+    def setsize(height, width):
         _window.geometry(str(height) + "x" + str(width))
 
     def draw_board(self):
@@ -121,90 +119,90 @@ class Window:
 
     @staticmethod
     def place_cell(x, y):
-        CAN_Zone_Image = canvas.create_image(x * img_size + decal, y * img_size + decal, image=IMG_cell, anchor="nw")
+        canvas.create_image(x * img_size + decal, y * img_size + decal, image=IMG_cell, anchor="nw")
 
     @staticmethod
     def place_wall(x, y, case):
         if case.has_walls_in_dir(Direction.Direction.NORTH):
-            CAN_Zone_Image = canvas.create_image(x * img_size, y * img_size - 4, image=IMG_H_Wall, anchor="nw")
+            canvas.create_image(x * img_size, y * img_size - 4, image=IMG_H_Wall, anchor="nw")
         if case.has_walls_in_dir(Direction.Direction.SOUTH):
-            CAN_Zone_Image = canvas.create_image(x * img_size, y * img_size + 33, image=IMG_H_Wall, anchor="nw")
+            canvas.create_image(x * img_size, y * img_size + 33, image=IMG_H_Wall, anchor="nw")
         if case.has_walls_in_dir(Direction.Direction.WEST):
-            CAN_Zone_Image = canvas.create_image(x * img_size - 4, y * img_size, image=IMG_V_Wall, anchor="nw")
+            canvas.create_image(x * img_size - 4, y * img_size, image=IMG_V_Wall, anchor="nw")
         if case.has_walls_in_dir(Direction.Direction.EAST):
-            CAN_Zone_Image = canvas.create_image(x * img_size + 33, y * img_size, image=IMG_V_Wall, anchor="nw")
+            canvas.create_image(x * img_size + 33, y * img_size, image=IMG_V_Wall, anchor="nw")
 
     @staticmethod
     def place_objective(x, y, case):
         if case.game_object() == GameObject.GameObject.VORTEX:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_VORTEX, anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_VORTEX, anchor="center")
         if case.game_object() == GameObject.GameObject.BLUE_BALL:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_BLUE_BALL,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_BLUE_BALL,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.RED_BALL:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_RED_BALL,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_RED_BALL,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.GREEN_BALL:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_GREEN_BALL,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_GREEN_BALL,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.YELLOW_BALL:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_YELLOW_BALL,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_YELLOW_BALL,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.BLUE_COIN:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_BLUE_COIN,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_BLUE_COIN,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.RED_COIN:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_RED_COIN,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_RED_COIN,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.GREEN_COIN:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_GREEN_COIN,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_GREEN_COIN,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.YELLOW_COIN:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_YELLOW_COIN,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_YELLOW_COIN,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.BLUE_RING:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_BLUE_RING,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_BLUE_RING,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.RED_RING:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_RED_RING,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_RED_RING,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.GREEN_RING:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_GREEN_RING,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_GREEN_RING,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.YELLOW_RING:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_YELLOW_RING,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_YELLOW_RING,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.BLUE_BEACON:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_BLUE_BEACON,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_BLUE_BEACON,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.RED_BEACON:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_RED_BEACON,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_RED_BEACON,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.GREEN_BEACON:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_GREEN_BEACON,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_GREEN_BEACON,
+                                anchor="center")
         if case.game_object() == GameObject.GameObject.YELLOW_BEACON:
-            CAN_Zone_Image = canvas.create_image(x * img_size + img_size / 2 + decal,
-                                                 y * img_size + img_size / 2 + decal, image=IMG_YELLOW_BEACON,
-                                                 anchor="center")
+            canvas.create_image(x * img_size + img_size / 2 + decal,
+                                y * img_size + img_size / 2 + decal, image=IMG_YELLOW_BEACON,
+                                anchor="center")
 
-    def move_N(self):
+    def move_n(self):
         if self._color is not None:
             x = self._board.robot(self._color).pos.x * img_size + img_size / 2 + decal
             y = self._board.robot(self._color).pos.y * img_size + img_size / 2 + decal
@@ -233,7 +231,7 @@ class Window:
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
 
-    def move_S(self):
+    def move_s(self):
         if self._color is not None:
             x = self._board.robot(self._color).pos.x * img_size + img_size / 2 + decal
             y = self._board.robot(self._color).pos.y * img_size + img_size / 2 + decal
@@ -262,7 +260,7 @@ class Window:
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
 
-    def move_E(self):
+    def move_e(self):
         if self._color is not None:
             x = self._board.robot(self._color).pos.x * img_size + img_size / 2 + decal
             y = self._board.robot(self._color).pos.y * img_size + img_size / 2 + decal
@@ -291,7 +289,7 @@ class Window:
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
 
-    def move_W(self):
+    def move_w(self):
         if self._color is not None:
             x = self._board.robot(self._color).pos.x * img_size + img_size / 2 + decal
             y = self._board.robot(self._color).pos.y * img_size + img_size / 2 + decal
@@ -320,39 +318,34 @@ class Window:
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
 
-    def pick_R(self):
+    def pick_r(self):
         self._color = "Red"
         LColor.config(bg="Red")
 
-    def pick_B(self):
+    def pick_b(self):
         self._color = "Blue"
         LColor.config(bg="Blue")
 
-    def pick_G(self):
+    def pick_g(self):
         self._color = "Green"
         LColor.config(bg="Green")
 
-    def pick_Y(self):
+    def pick_y(self):
         self._color = "Yellow"
         LColor.config(bg="Yellow")
 
     def solve(self):
-        ia = PathSolver.PathSolver(None, None, b)
-        ia.choose_next_state()
-        state = ia
-        while state != None:
-            fen.draw_board(state.board())
-            state = state._nextState
+        print("FUCK")
 
     def button_config(self):
-        BNorth.config(command=self.move_N)
-        BSouth.config(command=self.move_S)
-        BWest.config(command=self.move_W)
-        BEast.config(command=self.move_E)
+        BNorth.config(command=self.move_n)
+        BSouth.config(command=self.move_s)
+        BWest.config(command=self.move_w)
+        BEast.config(command=self.move_e)
 
-        BRed.config(command=self.pick_R)
-        BBlue.config(command=self.pick_B)
-        BGreen.config(command=self.pick_G)
-        BYellow.config(command=self.pick_Y)
+        BRed.config(command=self.pick_r)
+        BBlue.config(command=self.pick_b)
+        BGreen.config(command=self.pick_g)
+        BYellow.config(command=self.pick_y)
 
         BSolve.config(command=self.solve)
