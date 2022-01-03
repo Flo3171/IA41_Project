@@ -13,6 +13,7 @@ class PathSolver:
         self._currentBoard = copy.deepcopy(board)
         self._testBoard = copy.deepcopy(board)
         self._robots = copy.deepcopy(board.robots)
+        self._playerBot = board.target_robot
 
 
 
