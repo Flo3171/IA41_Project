@@ -29,7 +29,7 @@ class Board:
 
     def robot(self, objective_color):
         for i in range(4):
-            if self._robots[i].color() == objective_color:
+            if self._robots[i].color == objective_color:
                 return self._robots[i]
 
     @property

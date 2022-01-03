@@ -202,80 +202,120 @@ class Window:
 
     def move_N(self):
         if self._color is not None:
-            cord = self._board.case(self._board.robot(self._color).pos().x,
-                                    self._board.robot(self._color).pos().y).destination(
+            x = self._board.robot(self._color).pos.x * img_size + img_size / 2 + decal
+            y = self._board.robot(self._color).pos.y * img_size + img_size / 2 + decal
+            cord = self._board.case(self._board.robot(self._color).pos.x,
+                                    self._board.robot(self._color).pos.y).destination(
                 Direction.Direction.NORTH).case.coord
             self._board.move_bot(self._color, cord)
             if self._color == "Red":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Red")
                 canvas.coords(self.R_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Blue":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Blue")
                 canvas.coords(self.B_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Green":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Green")
                 canvas.coords(self.G_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Yellow":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Yellow")
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
         self._color = None
 
     def move_S(self):
         if self._color is not None:
-            cord = self._board.case(self._board.robot(self._color).pos().x,
-                                    self._board.robot(self._color).pos().y).destination(
+            x = self._board.robot(self._color).pos.x * img_size + img_size / 2 + decal
+            y = self._board.robot(self._color).pos.y * img_size + img_size / 2 + decal
+            cord = self._board.case(self._board.robot(self._color).pos.x,
+                                    self._board.robot(self._color).pos.y).destination(
                 Direction.Direction.SOUTH).case.coord
             self._board.move_bot(self._color, cord)
             if self._color == "Red":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Red")
                 canvas.coords(self.R_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Blue":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Blue")
                 canvas.coords(self.B_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Green":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Green")
                 canvas.coords(self.G_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Yellow":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Yellow")
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
         self._color = None
 
     def move_E(self):
         if self._color is not None:
-            cord = self._board.case(self._board.robot(self._color).pos().x,
-                                    self._board.robot(self._color).pos().y).destination(
+            x = self._board.robot(self._color).pos.x * img_size + img_size / 2 + decal
+            y = self._board.robot(self._color).pos.y * img_size + img_size / 2 + decal
+            cord = self._board.case(self._board.robot(self._color).pos.x,
+                                    self._board.robot(self._color).pos.y).destination(
                 Direction.Direction.EAST).case.coord
             self._board.move_bot(self._color, cord)
             if self._color == "Red":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Red")
                 canvas.coords(self.R_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Blue":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Blue")
                 canvas.coords(self.B_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Green":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Green")
                 canvas.coords(self.G_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Yellow":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Yellow")
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
         self._color = None
 
     def move_W(self):
         if self._color is not None:
-            cord = self._board.case(self._board.robot(self._color).pos().x,
-                                    self._board.robot(self._color).pos().y).destination(
+            x = self._board.robot(self._color).pos.x * img_size + img_size / 2 + decal
+            y = self._board.robot(self._color).pos.y * img_size + img_size / 2 + decal
+            cord = self._board.case(self._board.robot(self._color).pos.x,
+                                    self._board.robot(self._color).pos.y).destination(
                 Direction.Direction.WEST).case.coord
             self._board.move_bot(self._color, cord)
             if self._color == "Red":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Red")
                 canvas.coords(self.R_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Blue":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Blue")
                 canvas.coords(self.B_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Green":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Green")
                 canvas.coords(self.G_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
             if self._color == "Yellow":
+                canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
+                                   cord.y * img_size + img_size / 2 + decal, width=2, fill="Yellow")
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
         self._color = None
