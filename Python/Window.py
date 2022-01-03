@@ -104,13 +104,13 @@ class Window:
         Window.button_config(self)
 
     def place_robot(self, x, y, case):
-        if case.bot().color() == "Red":
+        if case.bot.color == "Red":
             self.R_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_R_robot , anchor = "center" )
-        if case.bot().color() == "Blue":
+        if case.bot.color == "Blue":
             self.B_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_B_robot , anchor = "center" )
-        if case.bot().color() == "Green":
+        if case.bot.color == "Green":
             self.G_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_G_robot , anchor = "center" )
-        if case.bot().color() == "Yellow":
+        if case.bot.color == "Yellow":
             self.Y_robot = canvas.create_image (x*img_size +img_size/2 +decal , y*img_size +img_size/2+decal, image = IMG_Y_robot , anchor = "center" )
 
     @staticmethod
