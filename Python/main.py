@@ -11,7 +11,7 @@ import Direction
 import Window
 import Wall
 import Robot
-import AI
+
 
 c = [Coord.Coord(7, 0),
      Coord.Coord(0, 15),
@@ -33,15 +33,15 @@ b.choose_objective(GameObject.GameObject.YELLOW_COIN)
 
 
 
-ai = AI.AI()
-ai.solve(b)
+"""ai = AI.AI()
+ai.solve(b)"""
 
-"""m = CostMap.CostMap(b)
+m = CostMap.CostMap(b)
 
 m.update_cost_map()
 print(b.objective.coord)
 print(b.objective.game_object)
-print(m)"""
+print(m)
 
 fen = Window.Window(b)
 fen.draw_board()
