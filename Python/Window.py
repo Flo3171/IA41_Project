@@ -76,7 +76,6 @@ class Window:
         self._coups = 0
         self.IMG_Objective = canvas2.create_image(170, 250)
         self.lines = []
-        self.nbSol = 0 #a enlever
         Window.define_objective(self)
         Window.nb_coups_sol(self)
         Window.launch_fen()
@@ -369,8 +368,8 @@ class Window:
     def solve(self):
         ai = AI.AI(self._board)
         ai.solve()
-        col = ai.solution[self.nbSol].robot_color  # récupère la couleur du robot à jouer
-        dest = ai.solution[self.nbSol].direction  # récupère la destination à appliquer
+        col = ai.solution[0].robot_color  # récupère la couleur du robot à jouer
+        dest = ai.solution[0].direction  # récupère la destination à appliquer
         x = self._board.robot(col).pos.x
         y = self._board.robot(col).pos.y
         cord = self._board.case(self._board.robot(col).pos.x,
@@ -380,11 +379,11 @@ class Window:
     def resolve(self):
         ai = AI.AI(self._board)
         ai.solve()
-        if len(ai.solution) != 0:
+        print(ai.solution)
+        if ai.solution[0] is not None:
             Window.add_coup(self)
-            col = ai.solution[self.nbSol].robot_color  # récupère la couleur du robot à jouer
-            dest = ai.solution[self.nbSol].direction  # récupère la destination à appliquer
-            self.nbSol = self.nbSol +1
+            col = ai.solution[0].robot_color  # récupère la couleur du robot à jouer
+            dest = ai.solution[0].direction  # récupère la destination à appliquer
             x = self._board.robot(col).pos.x
             y = self._board.robot(col).pos.y
             cord = self._board.case(self._board.robot(col).pos.x,
@@ -410,9 +409,8 @@ class Window:
         ai.solve()
         if len(ai.solution) != 0:
             Window.add_coup(self)
-            col = ai.solution[self.nbSol].robot_color  # récupère la couleur du robot à jouer
-            dest = ai.solution[self.nbSol].direction  # récupère la destination à appliquer
-            self.nbSol = self.nbSol +1 # a enlever
+            col = ai.solution[0].robot_color  # récupère la couleur du robot à jouer
+            dest = ai.solution[0].direction  # récupère la destination à appliquer
             x = self._board.robot(col).pos.x
             y = self._board.robot(col).pos.y
             cord = self._board.case(self._board.robot(col).pos.x,
@@ -432,14 +430,11 @@ class Window:
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
 
-            if self.nbSol != len(ai.solution): # a enlever
+            if len(ai.solution) != 0:
                 Window.resolve_all(self)
-            """if len(ai.solution) != 0: #pour remplacer
-                Window.resolve_all(self)"""
             Window.nb_coups_sol(self)
 
     def reset(self):
-        self.nbSol = 0 #a enlever
         Window.supp_lines(self)
         self._board.reset_bot()
         x = self._board.robot("Red").pos.x

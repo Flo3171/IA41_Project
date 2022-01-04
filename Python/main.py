@@ -37,8 +37,8 @@ b.update_destination()
 ai = AI.AI(b)
 solution = ai.solve()
 
-for m in solution:
-    print(m.robot_color + " " + m.direction.__str__())
+"""for m in solution:
+    print(m.robot_color + " " + m.direction.__str__())"""
 
 """m = CostMap.CostMap(b)
 
