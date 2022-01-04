@@ -30,6 +30,7 @@ for i in range(4):
     b.case_coord(c[i]).place_bot(r)
 
 b.choose_objective(GameObject.GameObject.YELLOW_COIN)
+b.update_destination()
 
 
 

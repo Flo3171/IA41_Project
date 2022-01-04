@@ -2,6 +2,7 @@ from tkinter import *
 import Board
 import Direction
 import GameObject
+from Python import AI
 
 img_size = 38
 decal = 0
@@ -22,9 +23,11 @@ BGreen = Button(canvas2, text="", bg="green", width=5)
 BYellow = Button(canvas2, text="", bg="yellow", width=5)
 BSolve = Button(canvas2, text="VIEW NEXT STEP", bg="Brown")
 BResolve = Button(canvas2, text="PLAY NEXT STEP", bg="Brown")
+BResolveAll = Button(canvas2, text="RESOLVE SOLUTION", bg="Brown")
 BReset = Button(canvas2, text="RESET", bg="Brown")
 LColor = Label(canvas2, text="Color select", bg="Brown")
 LCoups = Label(canvas2, text="Nombre de coups joués :", bg="Brown")
+LNbCoups = Label(canvas2, text="solution en coups :", bg="Brown")
 
 IMG_R_robot = PhotoImage(file="files/robots/RedRobot.png")
 IMG_B_robot = PhotoImage(file="files/robots/BlueRobot.png")
@@ -71,9 +74,11 @@ class Window:
         self.G_robot = None
         self.Y_robot = None
         self._coups = 0
-        self.IMG_Objective = canvas2.create_image(170, 370)
+        self.IMG_Objective = canvas2.create_image(170, 250)
         self.lines = []
+        self.nbSol = 0 #a enlever
         Window.define_objective(self)
+        Window.nb_coups_sol(self)
         Window.launch_fen()
 
     @staticmethod
@@ -91,12 +96,14 @@ class Window:
         BBlue.place(x=110, y=200, anchor="center")
         BGreen.place(x=180, y=200, anchor="center")
         BYellow.place(x=250, y=200, anchor="center")
-        BSolve.place(x=150, y=280, anchor="center")
-        BResolve.place(x=150, y=320, anchor="center")
+        BSolve.place(x=30, y=300, anchor="w")
+        BResolve.place(x=30, y=340, anchor="w")
+        BResolveAll.place(x=30, y=380, anchor="w")
         BReset.place(x=30, y=580, anchor="center")
         LColor.place(x=60, y=30, anchor="center")
         LCoups.place(x=130, y=30, anchor="w")
-        Label(canvas2, text="objective : ", bg="brown").place(x=100, y=370, anchor="center")
+        LNbCoups.place(x=150, y=335, anchor="w")
+        Label(canvas2, text="objective : ", bg="brown").place(x=100, y=250, anchor="center")
 
     def define_objective(self):
 
@@ -278,6 +285,7 @@ class Window:
             if self._color == "Yellow":
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
+        Window.nb_coups_sol(self)
 
     def move_s(self):
         if self._color is not None:
@@ -298,6 +306,7 @@ class Window:
             if self._color == "Yellow":
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
+        Window.nb_coups_sol(self)
 
     def move_e(self):
         if self._color is not None:
@@ -318,6 +327,7 @@ class Window:
             if self._color == "Yellow":
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
+        Window.nb_coups_sol(self)
 
     def move_w(self):
         if self._color is not None:
@@ -338,6 +348,7 @@ class Window:
             if self._color == "Yellow":
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
+        Window.nb_coups_sol(self)
 
     def pick_r(self):
         self._color = "Red"
@@ -356,8 +367,10 @@ class Window:
         LColor.config(bg="Yellow")
 
     def solve(self):
-        col = "Red"  # récupère la couleur du robot à jouer
-        dest = Direction.Direction.NORTH  # récupère la destination à appliquer
+        ai = AI.AI(self._board)
+        ai.solve()
+        col = ai.solution[self.nbSol].robot_color  # récupère la couleur du robot à jouer
+        dest = ai.solution[self.nbSol].direction  # récupère la destination à appliquer
         x = self._board.robot(col).pos.x
         y = self._board.robot(col).pos.y
         cord = self._board.case(self._board.robot(col).pos.x,
@@ -365,29 +378,68 @@ class Window:
         Window.drawn_line(self, x, y, cord.x, cord.y, col)
 
     def resolve(self):
-        Window.add_coup(self)
-        col = "Red"  # récupère la couleur du robot à jouer
-        dest = Direction.Direction.NORTH  # récupère la destination à appliquer
-        x = self._board.robot(col).pos.x
-        y = self._board.robot(col).pos.y
-        cord = self._board.case(self._board.robot(col).pos.x,
-                                self._board.robot(col).pos.y).destination(dest).case.coord
-        self._board.move_bot(col, cord)
-        Window.drawn_line(self, x, y, cord.x, cord.y, col)
-        if col == "Red":
-            canvas.coords(self.R_robot, cord.x * img_size + img_size / 2 + decal,
-                          cord.y * img_size + img_size / 2 + decal)
-        if col == "Blue":
-            canvas.coords(self.B_robot, cord.x * img_size + img_size / 2 + decal,
-                          cord.y * img_size + img_size / 2 + decal)
-        if col == "Green":
-            canvas.coords(self.G_robot, cord.x * img_size + img_size / 2 + decal,
-                          cord.y * img_size + img_size / 2 + decal)
-        if col == "Yellow":
-            canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
-                          cord.y * img_size + img_size / 2 + decal)
+        ai = AI.AI(self._board)
+        ai.solve()
+        if len(ai.solution) != 0:
+            Window.add_coup(self)
+            col = ai.solution[self.nbSol].robot_color  # récupère la couleur du robot à jouer
+            dest = ai.solution[self.nbSol].direction  # récupère la destination à appliquer
+            self.nbSol = self.nbSol +1
+            x = self._board.robot(col).pos.x
+            y = self._board.robot(col).pos.y
+            cord = self._board.case(self._board.robot(col).pos.x,
+                                    self._board.robot(col).pos.y).destination(dest).case.coord
+            self._board.move_bot(col, cord)
+            Window.drawn_line(self, x, y, cord.x, cord.y, col)
+            if col == "Red":
+                canvas.coords(self.R_robot, cord.x * img_size + img_size / 2 + decal,
+                              cord.y * img_size + img_size / 2 + decal)
+            if col == "Blue":
+                canvas.coords(self.B_robot, cord.x * img_size + img_size / 2 + decal,
+                              cord.y * img_size + img_size / 2 + decal)
+            if col == "Green":
+                canvas.coords(self.G_robot, cord.x * img_size + img_size / 2 + decal,
+                              cord.y * img_size + img_size / 2 + decal)
+            if col == "Yellow":
+                canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
+                              cord.y * img_size + img_size / 2 + decal)
+            Window.nb_coups_sol(self)
+
+    def resolve_all(self):
+        ai = AI.AI(self._board)
+        ai.solve()
+        if len(ai.solution) != 0:
+            Window.add_coup(self)
+            col = ai.solution[self.nbSol].robot_color  # récupère la couleur du robot à jouer
+            dest = ai.solution[self.nbSol].direction  # récupère la destination à appliquer
+            self.nbSol = self.nbSol +1 # a enlever
+            x = self._board.robot(col).pos.x
+            y = self._board.robot(col).pos.y
+            cord = self._board.case(self._board.robot(col).pos.x,
+                                    self._board.robot(col).pos.y).destination(dest).case.coord
+            self._board.move_bot(col, cord)
+            Window.drawn_line(self, x, y, cord.x, cord.y, col)
+            if col == "Red":
+                canvas.coords(self.R_robot, cord.x * img_size + img_size / 2 + decal,
+                              cord.y * img_size + img_size / 2 + decal)
+            if col == "Blue":
+                canvas.coords(self.B_robot, cord.x * img_size + img_size / 2 + decal,
+                              cord.y * img_size + img_size / 2 + decal)
+            if col == "Green":
+                canvas.coords(self.G_robot, cord.x * img_size + img_size / 2 + decal,
+                              cord.y * img_size + img_size / 2 + decal)
+            if col == "Yellow":
+                canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
+                              cord.y * img_size + img_size / 2 + decal)
+
+            if self.nbSol != len(ai.solution): # a enlever
+                Window.resolve_all(self)
+            """if len(ai.solution) != 0: #pour remplacer
+                Window.resolve_all(self)"""
+            Window.nb_coups_sol(self)
 
     def reset(self):
+        self.nbSol = 0 #a enlever
         Window.supp_lines(self)
         self._board.reset_bot()
         x = self._board.robot("Red").pos.x
@@ -425,6 +477,14 @@ class Window:
         self._coups = self._coups + 1
         LCoups.config(text="Nombre de coups joués : " + str(self._coups))
 
+    def nb_coups_sol(self):
+        ai = AI.AI(self._board)
+        ai.solve()
+        if len(ai.solution) == 0:
+            LNbCoups.config(text="Aucune solution\ntrouvée")
+        else:
+            LNbCoups.config(text="solution possible en :\n" + str(len(ai.solution)) + " coups")
+
     def button_config(self):
         BNorth.config(command=self.move_n)
         BSouth.config(command=self.move_s)
@@ -438,4 +498,5 @@ class Window:
 
         BSolve.config(command=self.solve)
         BResolve.config(command=self.resolve)
+        BResolveAll.config(command=self.resolve_all)
         BReset.config(command=self.reset)
