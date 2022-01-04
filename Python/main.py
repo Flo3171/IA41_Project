@@ -16,7 +16,7 @@ import AI
 c = [Coord.Coord(7, 0),
      Coord.Coord(0, 15),
      Coord.Coord(15, 0),
-     Coord.Coord(3, 3)]
+     Coord.Coord(3, 4)]
 
 colors = ["Blue", "Green", "Red", "Yellow"]
 
@@ -34,15 +34,21 @@ b.update_destination()
 
 
 
-"""ai = AI.AI(b)
-ai.solve()"""
+ai = AI.AI(b)
+solution = ai.solve()
+
+for m in solution:
+    print(m.robot_color + " " + m.direction.__str__())
 
 """m = CostMap.CostMap(b)
 
 m.update_cost_map()
 print(b.objective.coord)
 print(b.objective.game_object)
-print(m)"""
+print(b.target_robot.pos)
+print(m)
+
+print(m.get_next_move().direction)"""
 
 fen = Window.Window(b)
 fen.draw_board()

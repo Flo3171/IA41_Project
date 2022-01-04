@@ -75,6 +75,11 @@ class Board:
             if self._robots[i].color == objective_color:
                 self._target_robot = self._robots[i]
 
+    def move_bot_move(self, move):
+        cord = Board.case(self, Board.robot(self, move.robot_color).pos.x,
+                               Board.robot(self, move.robot_color).pos.y).destination(move.direction).case.coord
+        Board.move_bot(self, move.robot_color, cord)
+
     def generate_board(self):
         self.generate_default_wall()
         self.generate_template(False)

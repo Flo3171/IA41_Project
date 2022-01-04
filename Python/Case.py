@@ -52,6 +52,9 @@ class Case:
     def destinations(self):
         return self._destination
 
+    def destination(self, i):
+        return  self._destination[i]
+
     def destination(self, direction):
         for i in range(len(self._destination)):
             if self._destination[i].direction == direction:

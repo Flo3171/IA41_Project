@@ -85,9 +85,12 @@ class CostMap:
                and self.board.case_coord(coord).bot.pos.x == self.target_robot.pos.x \
                and self.board.case_coord(coord).bot.pos.y == self.target_robot.pos.y
 
-    def get_move(self):
+    def get_next_move(self):
         if self.cost >= 0:
-            return None
+            for d in Direction.get_ordinal_direction_list():
+                destination = self.board.case_coord(self.target_robot.pos).destination(d)
+                if self.matrix_coord(self.target_robot.pos) - 1 == self.matrix_coord(destination.case.coord):
+                    return Move.Move(self.target_robot.color, d)
 
         else:
             return None
