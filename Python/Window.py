@@ -22,6 +22,7 @@ BGreen = Button(canvas2, text="", bg="green", width=5)
 BYellow = Button(canvas2, text="", bg="yellow", width=5)
 BSolve = Button(canvas2, text="VIEW NEXT STEP", bg="Brown")
 BResolve = Button(canvas2, text="PLAY NEXT STEP", bg="Brown")
+BReset = Button(canvas2, text="RESET", bg="Brown")
 LColor = Label(canvas2, text="Color select", bg="Brown")
 LCoups = Label(canvas2, text="Nombre de coups joués :", bg="Brown")
 
@@ -92,9 +93,10 @@ class Window:
         BYellow.place(x=250, y=200, anchor="center")
         BSolve.place(x=150, y=280, anchor="center")
         BResolve.place(x=150, y=320, anchor="center")
+        BReset.place(x=30, y=580, anchor="center")
         LColor.place(x=60, y=30, anchor="center")
         LCoups.place(x=130, y=30, anchor="w")
-        Label(canvas2, text="objective : ", bg="grey").place(x=100, y=370, anchor="center")
+        Label(canvas2, text="objective : ", bg="brown").place(x=100, y=370, anchor="center")
 
     def define_objective(self):
 
@@ -355,7 +357,7 @@ class Window:
 
     def solve(self):
         col = "Red"  # récupère la couleur du robot à jouer
-        dest = Direction.Direction.NORTH  # rècupère la destination à appliquer
+        dest = Direction.Direction.NORTH  # récupère la destination à appliquer
         x = self._board.robot(col).pos.x
         y = self._board.robot(col).pos.y
         cord = self._board.case(self._board.robot(col).pos.x,
@@ -365,7 +367,7 @@ class Window:
     def resolve(self):
         Window.add_coup(self)
         col = "Red"  # récupère la couleur du robot à jouer
-        dest = Direction.Direction.NORTH  # rècupère la destination à appliquer
+        dest = Direction.Direction.NORTH  # récupère la destination à appliquer
         x = self._board.robot(col).pos.x
         y = self._board.robot(col).pos.y
         cord = self._board.case(self._board.robot(col).pos.x,
@@ -385,14 +387,34 @@ class Window:
             canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                           cord.y * img_size + img_size / 2 + decal)
 
+    def reset(self):
+        Window.supp_lines(self)
+        self._board.reset_bot()
+        x = self._board.robot("Red").pos.x
+        y = self._board.robot("Red").pos.y
+        canvas.coords(self.R_robot, x * img_size + img_size / 2 + decal,
+                      y * img_size + img_size / 2 + decal)
+        x = self._board.robot("Blue").pos.x
+        y = self._board.robot("Blue").pos.y
+        canvas.coords(self.B_robot, x * img_size + img_size / 2 + decal,
+                      y * img_size + img_size / 2 + decal)
+        x = self._board.robot("Green").pos.x
+        y = self._board.robot("Green").pos.y
+        canvas.coords(self.G_robot, x * img_size + img_size / 2 + decal,
+                      y * img_size + img_size / 2 + decal)
+        x = self._board.robot("Yellow").pos.x
+        y = self._board.robot("Yellow").pos.y
+        canvas.coords(self.Y_robot, x * img_size + img_size / 2 + decal,
+                      y * img_size + img_size / 2 + decal)
+
     def drawn_line(self, x1, y1, x2, y2, color):
-        self.lines.append(canvas.create_line(x1 * img_size + img_size / 2, y1 * img_size + img_size / 2
-                                             , x2 * img_size + img_size / 2 + decal,
+        self.lines.append(canvas.create_line(x1 * img_size + img_size / 2, y1 * img_size + img_size / 2,
+                                             x2 * img_size + img_size / 2 + decal,
                                              y2 * img_size + img_size / 2 + decal, width=2, fill=color))
 
     def supp_last_line(self):
         long = len(self.lines)
-        canvas.delete(self.lines[long-1])
+        canvas.delete(self.lines[long - 1])
 
     def supp_lines(self):
         long = len(self.lines)
@@ -400,7 +422,7 @@ class Window:
             canvas.delete(self.lines[i])
 
     def add_coup(self):
-        self._coups = self._coups+1
+        self._coups = self._coups + 1
         LCoups.config(text="Nombre de coups joués : " + str(self._coups))
 
     def button_config(self):
@@ -416,3 +438,4 @@ class Window:
 
         BSolve.config(command=self.solve)
         BResolve.config(command=self.resolve)
+        BReset.config(command=self.reset)
