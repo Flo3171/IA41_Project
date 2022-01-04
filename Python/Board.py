@@ -425,7 +425,9 @@ class Board:
         return self.case(coord.x + Direction.get_x(direction), coord.y + Direction.get_y(direction)).has_bot()
 
     def is_obstacle(self, coord, direction):
-        return not Coord.Coord(coord.x + Direction.get_x(direction), coord.y + Direction.get_y(direction)).is_in_map() or self.case_coord(coord).has_walls_in_dir(direction) or self.has_bot_in_dir(
+        return not Coord.Coord(coord.x + Direction.get_x(direction),
+                               coord.y + Direction.get_y(direction)).is_in_map() or self.case_coord(
+            coord).has_walls_in_dir(direction) or self.has_bot_in_dir(
             coord, direction)
 
         # Methods to compute for each case the cases on which we can go in one move
@@ -555,6 +557,11 @@ class Board:
                 continue
             break
         self.update_destination()
+
+    def move_bot_direction(self, color, direction):
+        cordonnee = Board.case(self, Board.robot(self, color).pos.x,
+                               Board.robot(self, color).pos.y).destination(direction).case.coord
+        Board.move_bot(self, color, cordonnee)
 
     # depreciated
     # Method to move a bot after finding a valid place
