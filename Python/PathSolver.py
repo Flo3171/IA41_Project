@@ -1,4 +1,4 @@
-import Map
+import CostMap
 import copy
 import Direction
 import Move
@@ -15,7 +15,7 @@ class PathSolver:
         self._testBoard = copy.deepcopy(board)              #type board
         self._robots = copy.deepcopy(board.robots)          #type liste de robots
         self._playerBot = board.target_robot                #type robot
-        self._move = Move.Move(self._playerBot, None)       #type move
+        self._move = Move.Move(self._playerBot, None)  #type move
 
 
 
@@ -209,6 +209,6 @@ class PathSolver:
         next_move = PathSolver(self, None, self._currentBoard) #generate nextmove
         self._nextState = next_move
 
-        self.keep_searching(default_score) #keep going
+        self.keep_searching(default_score) # keep going
 
 

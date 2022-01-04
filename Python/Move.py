@@ -1,11 +1,11 @@
 class Move:
 
-    def __init__(self, robot, direction):
-        self._robot = robot
+    def __init__(self, robot_color, direction):
+        self._robot_color = robot_color
         self._direction = direction
 
-    def robot(self):
-        return self._robot
+    def robot_color(self):
+        return self._robot_color
 
     def direction(self):
         return self._direction

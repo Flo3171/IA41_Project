@@ -1,5 +1,6 @@
 import Direction
 import Coord
+import Move
 
 
 class CostMap:
@@ -83,6 +84,15 @@ class CostMap:
                and self.board.case_coord(coord).has_bot() \
                and self.board.case_coord(coord).bot.pos.x == self.target_robot.pos.x \
                and self.board.case_coord(coord).bot.pos.y == self.target_robot.pos.y
+
+    def get_move(self):
+        if self.cost >= 0:
+            return None
+
+        else:
+            return None
+
+
 
     def next_state(self, cost, coord_starting):
 
