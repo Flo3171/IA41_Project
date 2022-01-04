@@ -6,7 +6,7 @@ import GameObject
 import Coord
 import Direction
 
-fen = Window()
+fen = Window(None)
 fen.draw_board()
 fen.launch()
 

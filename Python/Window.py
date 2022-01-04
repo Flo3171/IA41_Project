@@ -1,5 +1,4 @@
 from tkinter import *
-
 import Board
 import Direction
 import GameObject
@@ -21,9 +20,10 @@ BRed = Button(canvas2, text="", bg="red", width=5)
 BBlue = Button(canvas2, text="", bg="blue", width=5)
 BGreen = Button(canvas2, text="", bg="green", width=5)
 BYellow = Button(canvas2, text="", bg="yellow", width=5)
-BSolve = Button(canvas2, text="SOLVE NEXT STEP", bg="Brown")
-BResolve = Button(canvas2, text="RESOLVE NEXT STEP", bg="Brown")
-LColor = Label(canvas2, text="Color select", bg="grey")
+BSolve = Button(canvas2, text="VIEW NEXT STEP", bg="Brown")
+BResolve = Button(canvas2, text="PLAY NEXT STEP", bg="Brown")
+LColor = Label(canvas2, text="Color select", bg="Brown")
+LCoups = Label(canvas2, text="Nombre de coups joués :", bg="Brown")
 
 IMG_R_robot = PhotoImage(file="files/robots/RedRobot.png")
 IMG_B_robot = PhotoImage(file="files/robots/BlueRobot.png")
@@ -54,25 +54,25 @@ IMG_YELLOW_BEACON = PhotoImage(file="files/items/YellowBeacon.png")
 
 class Window:
 
-    def __init__(self):
-        b = Board.Board()
-        b.generate_board()
-        b.choose_objective()
-        self._board = b
-        self._color = None
-        self.R_robot = None
-        self.B_robot = None
-        self.G_robot = None
-        self.Y_robot = None
-        Window.launch_fen()
-
     def __init__(self, board):
-        self._board = board
+
+        if board is None:
+            b = Board.Board()
+            b.generate_board()
+            b.choose_objective()
+            self._board = b
+        else:
+            self._board = board
+
         self._color = None
         self.R_robot = None
         self.B_robot = None
         self.G_robot = None
         self.Y_robot = None
+        self._coups = 0
+        self.IMG_Objective = canvas2.create_image(170, 370)
+        self.lines = []
+        Window.define_objective(self)
         Window.launch_fen()
 
     @staticmethod
@@ -92,7 +92,46 @@ class Window:
         BYellow.place(x=250, y=200, anchor="center")
         BSolve.place(x=150, y=280, anchor="center")
         BResolve.place(x=150, y=320, anchor="center")
-        LColor.place(x=150, y=30, anchor="center")
+        LColor.place(x=60, y=30, anchor="center")
+        LCoups.place(x=130, y=30, anchor="w")
+        Label(canvas2, text="objective : ", bg="grey").place(x=100, y=370, anchor="center")
+
+    def define_objective(self):
+
+        if self._board.objective.game_object == GameObject.GameObject.VORTEX:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_VORTEX, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.BLUE_BALL:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_BLUE_BALL, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.RED_BALL:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_RED_BALL, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.GREEN_BALL:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_GREEN_BALL, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.YELLOW_BALL:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_YELLOW_BALL, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.BLUE_COIN:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_BLUE_COIN, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.RED_COIN:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_RED_COIN, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.GREEN_COIN:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_GREEN_COIN, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.YELLOW_COIN:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_YELLOW_COIN, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.BLUE_RING:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_BLUE_RING, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.RED_RING:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_RED_RING, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.GREEN_RING:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_GREEN_RING, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.YELLOW_RING:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_YELLOW_RING, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.BLUE_BEACON:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_BLUE_BEACON, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.RED_BEACON:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_RED_BEACON, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.GREEN_BEACON:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_GREEN_BEACON, anchor="center")
+        if self._board.objective.game_object == GameObject.GameObject.YELLOW_BEACON:
+            canvas2.itemconfig(self.IMG_Objective, image=IMG_YELLOW_BEACON, anchor="center")
 
     @staticmethod
     def launch():
@@ -220,6 +259,7 @@ class Window:
 
     def move_n(self):
         if self._color is not None:
+            Window.add_coup(self)
             cord = self._board.case(self._board.robot(self._color).pos.x,
                                     self._board.robot(self._color).pos.y).destination(
                 Direction.Direction.NORTH).case.coord
@@ -239,6 +279,7 @@ class Window:
 
     def move_s(self):
         if self._color is not None:
+            Window.add_coup(self)
             cord = self._board.case(self._board.robot(self._color).pos.x,
                                     self._board.robot(self._color).pos.y).destination(
                 Direction.Direction.SOUTH).case.coord
@@ -258,6 +299,7 @@ class Window:
 
     def move_e(self):
         if self._color is not None:
+            Window.add_coup(self)
             cord = self._board.case(self._board.robot(self._color).pos.x,
                                     self._board.robot(self._color).pos.y).destination(
                 Direction.Direction.EAST).case.coord
@@ -277,6 +319,7 @@ class Window:
 
     def move_w(self):
         if self._color is not None:
+            Window.add_coup(self)
             cord = self._board.case(self._board.robot(self._color).pos.x,
                                     self._board.robot(self._color).pos.y).destination(
                 Direction.Direction.WEST).case.coord
@@ -313,23 +356,22 @@ class Window:
     def solve(self):
         col = "Red"  # récupère la couleur du robot à jouer
         dest = Direction.Direction.NORTH  # rècupère la destination à appliquer
-        x = self._board.robot(col).pos.x * img_size + img_size / 2 + decal
-        y = self._board.robot(col).pos.y * img_size + img_size / 2 + decal
+        x = self._board.robot(col).pos.x
+        y = self._board.robot(col).pos.y
         cord = self._board.case(self._board.robot(col).pos.x,
                                 self._board.robot(col).pos.y).destination(dest).case.coord
-        canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
-                           cord.y * img_size + img_size / 2 + decal, width=2, fill=col)
+        Window.drawn_line(self, x, y, cord.x, cord.y, col)
 
     def resolve(self):
+        Window.add_coup(self)
         col = "Red"  # récupère la couleur du robot à jouer
         dest = Direction.Direction.NORTH  # rècupère la destination à appliquer
-        x = self._board.robot(col).pos.x * img_size + img_size / 2 + decal
-        y = self._board.robot(col).pos.y * img_size + img_size / 2 + decal
+        x = self._board.robot(col).pos.x
+        y = self._board.robot(col).pos.y
         cord = self._board.case(self._board.robot(col).pos.x,
                                 self._board.robot(col).pos.y).destination(dest).case.coord
         self._board.move_bot(col, cord)
-        canvas.create_line(x, y, cord.x * img_size + img_size / 2 + decal,
-                           cord.y * img_size + img_size / 2 + decal, width=2, fill=col)
+        Window.drawn_line(self, x, y, cord.x, cord.y, col)
         if col == "Red":
             canvas.coords(self.R_robot, cord.x * img_size + img_size / 2 + decal,
                           cord.y * img_size + img_size / 2 + decal)
@@ -343,6 +385,23 @@ class Window:
             canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                           cord.y * img_size + img_size / 2 + decal)
 
+    def drawn_line(self, x1, y1, x2, y2, color):
+        self.lines.append(canvas.create_line(x1 * img_size + img_size / 2, y1 * img_size + img_size / 2
+                                             , x2 * img_size + img_size / 2 + decal,
+                                             y2 * img_size + img_size / 2 + decal, width=2, fill=color))
+
+    def supp_last_line(self):
+        long = len(self.lines)
+        canvas.delete(self.lines[long-1])
+
+    def supp_lines(self):
+        long = len(self.lines)
+        for i in range(long):
+            canvas.delete(self.lines[i])
+
+    def add_coup(self):
+        self._coups = self._coups+1
+        LCoups.config(text="Nombre de coups joués : " + str(self._coups))
 
     def button_config(self):
         BNorth.config(command=self.move_n)
