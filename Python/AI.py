@@ -2,6 +2,7 @@ import PathSolver
 import CostMap
 import Move
 import Direction
+import Coord
 
 
 class AI:
@@ -33,14 +34,18 @@ class AI:
         cost_map = CostMap.CostMap(self.board)
         cost_map.update_cost_map()
         if cost_map.cost >= 0:
-            return cost_map.get_next_move()
+            self.solution.append(cost_map.get_next_move())
         else:
-            for r in self.board.robots:
+            for color in ["Blue", "Green", "Red", "Yellow"]:
                 for d in Direction.get_ordinal_direction_list():
-                    print("ok")
+                    robot = self.board.robot(color)
+                    initial_pos = Coord(robot.pos.x, robot.pos.y)
+                    move = Move.Move(color, d)
+                    self.board.move_bot_move(move)
+                    new_cost_map = CostMap.CostMap(self.board)
+                    new_cost_map.update_cost_map()
+                    if cost_map.cost >= 0:
+                        self.solution.append(move)
+                    self.board.move_bot(color, initial_pos)
 
-    def find_next_move(self):
 
-        cost_map = CostMap.CostMap(self.board)
-        cost_map.update_cost_map()
-        return cost_map.get_next_move()
