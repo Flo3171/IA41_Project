@@ -1,3 +1,5 @@
+import Direction
+
 class Coord:
     def __init__(self, x, y):
         self._x = x
@@ -21,6 +23,12 @@ class Coord:
     @y.setter
     def y(self, y):
         self._y = y
+
+    def is_in_map(self):
+        return 0 <= self.x < 16 and 0 <= self.y < 16
+
+    def add_direction(self, direction):
+        return Coord(self.x + Direction.get_x(direction), self.y + Direction.get_y(direction))
 
     def rotate(self, angle):
 

@@ -105,7 +105,7 @@ class PathSolver:
         y = self.player_bot().pos().y()
         for i in range(15):                         #Going through map's matrix to find right case
             for j in range(15):
-                if current_map.matrix(i, j) == current_map.mapScore() - 1 and (
+                if current_map.matrix_index(i, j) == current_map.mapScore() - 1 and (
                         self._currentBoard.can_go_to_case(i, j, self._playerBot)):  #correct case is mapscore-1 (because one less move) and playerbot can go to it
                     self._currentBoard.case(x, y).remove_bot()                      #remove bot from previous placement
                     self._currentBoard.case(i, j).place_bot(self._playerBot)        #place bot on new placement

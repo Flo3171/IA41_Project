@@ -53,3 +53,7 @@ def get_n_adjacent(direction, rotate):
         return direction
     else:
         return get_n_adjacent(get_adjacent(direction), rotate - 1)
+
+
+def get_ordinal_direction_list():
+    return [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST]

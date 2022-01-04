@@ -55,18 +55,32 @@ IMG_YELLOW_BEACON = PhotoImage(file="files/items/YellowBeacon.png")
 class Window:
 
     def __init__(self):
-        self._board = Board.Board()
-        self._board.generate_board()
-        self._board.choose_objective()
-        _window.geometry(str(16 * img_size + 300 + decal) + "x" + str(16 * img_size + decal))
-        _window.resizable(width=False, height=False)
-        canvas.config(width=16 * img_size + (decal * 2), height=16 * img_size + (decal * 2))
-
+        b = Board.Board()
+        b.generate_board()
+        b.choose_objective()
+        self._board = b
         self._color = None
         self.R_robot = None
         self.B_robot = None
         self.G_robot = None
         self.Y_robot = None
+        Window.launch_fen()
+
+    def __init__(self, board):
+        self._board = board
+        self._color = None
+        self.R_robot = None
+        self.B_robot = None
+        self.G_robot = None
+        self.Y_robot = None
+        Window.launch_fen()
+
+    @staticmethod
+    def launch_fen():
+
+        _window.geometry(str(16 * img_size + 300 + decal) + "x" + str(16 * img_size + decal))
+        _window.resizable(width=False, height=False)
+        canvas.config(width=16 * img_size + (decal * 2), height=16 * img_size + (decal * 2))
 
         BNorth.place(x=150, y=80, anchor="center")
         BSouth.place(x=150, y=160, anchor="center")
@@ -89,18 +103,18 @@ class Window:
         _window.geometry(str(height) + "x" + str(width))
 
     def draw_board(self):
-        for i in range(16):
-            for j in range(16):
+        for j in range(16):
+            for i in range(16):
                 Window.place_cell(i, j)
-        for i in range(16):
-            for j in range(16):
+        for j in range(16):
+            for i in range(16):
                 Window.place_wall(i, j, self._board.case(i, j))
-        for i in range(16):
-            for j in range(16):
+        for j in range(16):
+            for i in range(16):
                 if self._board.case(i, j).has_game_object():
                     Window.place_objective(i, j, self._board.case(i, j))
-        for i in range(16):
-            for j in range(16):
+        for j in range(16):
+            for i in range(16):
                 if self._board.case(i, j).has_bot():
                     Window.place_robot(self, i, j, self._board.case(i, j))
         Window.button_config(self)

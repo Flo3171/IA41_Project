@@ -37,7 +37,13 @@ class Board:
         return self._objective
 
     def case(self, i, j):
-        return self._cases[i][j]
+        if 0 <= i < 16 and 0 <= j < 16:
+            return self._cases[i][j]
+        else:
+            return Case.Case(Coord.Coord(i, j))
+
+    def case_coord(self, coord):
+        return self.case(coord.x, coord.y)
 
     @property
     def target_robot(self):
@@ -93,15 +99,14 @@ class Board:
                     elif i == 9:
                         self._cases[9][j].add_wall(Wall.Wall(Direction.Direction.WEST))
 
-        possible_objective = []
         available_quarter = [True, True, True, True]
         # put one template on each quarter map
         for i in range(4):
 
-            template = random.randint(0, 15)
+            template = i  # random.randint(0, 15)
 
-            while not available_quarter[template % 4]:
-                template = random.randint(0, 15)
+            """while not available_quarter[template % 4]:
+                template = random.randint(0, 15)"""
 
             available_quarter[template % 4] = False
 
@@ -113,14 +118,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 5), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(4, 1), i, GameObject.GameObject.RED_BALL,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(2, 1), i, GameObject.GameObject.GREEN_BEACON,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(6, 3), i, GameObject.GameObject.YELLOW_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(4, 6), i, GameObject.GameObject.BLUE_RING,
-                                                          Direction.Direction.SOUTH_WEST))
+                self.put_object(Coord.Coord(4, 1), i, GameObject.GameObject.RED_BALL,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(1, 2), i, GameObject.GameObject.GREEN_BEACON,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(6, 3), i, GameObject.GameObject.YELLOW_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(4, 6), i, GameObject.GameObject.BLUE_RING,
+                                Direction.Direction.SOUTH_WEST)
 
             elif template == 1:
                 # template number 1
@@ -130,14 +135,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 3), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 4), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(5, 1), i, GameObject.GameObject.GREEN_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 2), i, GameObject.GameObject.RED_RING,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_BALL,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(2, 6), i, GameObject.GameObject.BLUE_BEACON,
-                                                          Direction.Direction.NORTH_EAST))
+                self.put_object(Coord.Coord(5, 1), i, GameObject.GameObject.GREEN_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(1, 2), i, GameObject.GameObject.RED_RING,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_BALL,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(2, 6), i, GameObject.GameObject.BLUE_BEACON,
+                                Direction.Direction.NORTH_EAST)
 
             elif template == 2:
                 # template number 2
@@ -147,14 +152,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 4), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 5), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(5, 2), i, GameObject.GameObject.BLUE_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.GREEN_BALL,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(7, 5), i, GameObject.GameObject.RED_BEACON,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.YELLOW_RING,
-                                                          Direction.Direction.NORTH_WEST))
+                self.put_object(Coord.Coord(5, 2), i, GameObject.GameObject.BLUE_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.GREEN_BALL,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(7, 5), i, GameObject.GameObject.RED_BEACON,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.YELLOW_RING,
+                                Direction.Direction.NORTH_WEST)
 
             elif template == 3:
                 # template number 3
@@ -164,16 +169,15 @@ class Board:
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 7), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(6, 1), i, GameObject.GameObject.BLUE_BALL,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.YELLOW_BEACON,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(5, 4), i, GameObject.GameObject.GREEN_RING,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(2, 5), i, GameObject.GameObject.RED_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(
-                    self.put_object(Coord.Coord(7, 5), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST))
+                self.put_object(Coord.Coord(6, 1), i, GameObject.GameObject.BLUE_BALL,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.YELLOW_BEACON,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(5, 4), i, GameObject.GameObject.GREEN_RING,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(2, 5), i, GameObject.GameObject.RED_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(7, 5), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST)
 
             elif template == 4:
                 # template number 4
@@ -183,14 +187,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 5), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(6, 1), i, GameObject.GameObject.YELLOW_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 2), i, GameObject.GameObject.GREEN_BEACON,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(6, 5), i, GameObject.GameObject.BLUE_RING,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.RED_BALL,
-                                                          Direction.Direction.SOUTH_WEST))
+                self.put_object(Coord.Coord(6, 1), i, GameObject.GameObject.YELLOW_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(1, 2), i, GameObject.GameObject.GREEN_BEACON,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(6, 5), i, GameObject.GameObject.BLUE_RING,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.RED_BALL,
+                                Direction.Direction.SOUTH_WEST)
 
             elif template == 5:
                 # template number 5
@@ -200,14 +204,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 4), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 5), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(2, 1), i, GameObject.GameObject.YELLOW_BALL,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(6, 3), i, GameObject.GameObject.BLUE_BEACON,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(4, 5), i, GameObject.GameObject.RED_RING,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.GREEN_COIN,
-                                                          Direction.Direction.SOUTH_WEST))
+                self.put_object(Coord.Coord(2, 1), i, GameObject.GameObject.YELLOW_BALL,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(6, 3), i, GameObject.GameObject.BLUE_BEACON,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(4, 5), i, GameObject.GameObject.RED_RING,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.GREEN_COIN,
+                                Direction.Direction.SOUTH_WEST)
 
             elif template == 6:
                 # template number 6
@@ -217,14 +221,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 5), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(1, 1), i, GameObject.GameObject.RED_BEACON,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.GREEN_BALL,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.BLUE_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(7, 5), i, GameObject.GameObject.YELLOW_RING,
-                                                          Direction.Direction.NORTH_WEST))
+                self.put_object(Coord.Coord(1, 1), i, GameObject.GameObject.RED_BEACON,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.GREEN_BALL,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.BLUE_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(7, 5), i, GameObject.GameObject.YELLOW_RING,
+                                Direction.Direction.NORTH_WEST)
 
             elif template == 7:
                 # template number 7
@@ -234,16 +238,15 @@ class Board:
                 self.put_wall(Coord.Coord(0, 4), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 5), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(2, 1), i, GameObject.GameObject.RED_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.GREEN_RING,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_BEACON,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(5, 6), i, GameObject.GameObject.BLUE_BALL,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(
-                    self.put_object(Coord.Coord(3, 7), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST))
+                self.put_object(Coord.Coord(2, 1), i, GameObject.GameObject.RED_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.GREEN_RING,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_BEACON,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(5, 6), i, GameObject.GameObject.BLUE_BALL,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(3, 7), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST)
 
             elif template == 8:
                 # template number 8
@@ -253,14 +256,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 7), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(3, 1), i, GameObject.GameObject.GREEN_BEACON,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(6, 3), i, GameObject.GameObject.YELLOW_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 4), i, GameObject.GameObject.RED_BALL,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(4, 6), i, GameObject.GameObject.BLUE_RING,
-                                                          Direction.Direction.NORTH_EAST))
+                self.put_object(Coord.Coord(3, 1), i, GameObject.GameObject.GREEN_BEACON,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(6, 3), i, GameObject.GameObject.YELLOW_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(1, 4), i, GameObject.GameObject.RED_BALL,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(4, 6), i, GameObject.GameObject.BLUE_RING,
+                                Direction.Direction.NORTH_EAST)
 
             elif template == 9:
                 # template number 9
@@ -270,14 +273,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 3), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 4), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(3, 2), i, GameObject.GameObject.YELLOW_BALL,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(5, 3), i, GameObject.GameObject.BLUE_BEACON,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.RED_RING,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(4, 5), i, GameObject.GameObject.GREEN_COIN,
-                                                          Direction.Direction.SOUTH_WEST))
+                self.put_object(Coord.Coord(3, 2), i, GameObject.GameObject.YELLOW_BALL,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(5, 3), i, GameObject.GameObject.BLUE_BEACON,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.RED_RING,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(4, 5), i, GameObject.GameObject.GREEN_COIN,
+                                Direction.Direction.SOUTH_WEST)
 
             elif template == 10:
                 # template number 10
@@ -287,14 +290,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 5), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(4, 1), i, GameObject.GameObject.GREEN_BALL,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.RED_BEACON,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(5, 5), i, GameObject.GameObject.YELLOW_RING,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.BLUE_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
+                self.put_object(Coord.Coord(4, 1), i, GameObject.GameObject.GREEN_BALL,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.RED_BEACON,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(5, 5), i, GameObject.GameObject.YELLOW_RING,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.BLUE_COIN,
+                                Direction.Direction.SOUTH_EAST)
 
             elif template == 11:
                 # template number 11
@@ -304,16 +307,15 @@ class Board:
                 self.put_wall(Coord.Coord(0, 3), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 4), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(5, 1), i, GameObject.GameObject.BLUE_BALL,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(3, 4), i, GameObject.GameObject.RED_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(6, 5), i, GameObject.GameObject.GREEN_RING,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.YELLOW_BEACON,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(
-                    self.put_object(Coord.Coord(7, 1), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_WEST))
+                self.put_object(Coord.Coord(5, 1), i, GameObject.GameObject.BLUE_BALL,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(3, 4), i, GameObject.GameObject.RED_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(6, 5), i, GameObject.GameObject.GREEN_RING,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(1, 6), i, GameObject.GameObject.YELLOW_BEACON,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(7, 1), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_WEST)
 
             elif template == 12:
                 # template number 12
@@ -323,14 +325,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 5), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.RED_BALL,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(2, 6), i, GameObject.GameObject.GREEN_BEACON,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.BLUE_RING,
-                                                          Direction.Direction.SOUTH_WEST))
+                self.put_object(Coord.Coord(1, 3), i, GameObject.GameObject.RED_BALL,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(6, 4), i, GameObject.GameObject.YELLOW_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(2, 6), i, GameObject.GameObject.GREEN_BEACON,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(3, 6), i, GameObject.GameObject.BLUE_RING,
+                                Direction.Direction.SOUTH_WEST)
 
             elif template == 13:
                 # template number 13
@@ -340,14 +342,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 7), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(5, 2), i, GameObject.GameObject.GREEN_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.YELLOW_BALL,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 5), i, GameObject.GameObject.RED_RING,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(4, 7), i, GameObject.GameObject.BLUE_BEACON,
-                                                          Direction.Direction.NORTH_EAST))
+                self.put_object(Coord.Coord(5, 2), i, GameObject.GameObject.GREEN_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.YELLOW_BALL,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(1, 5), i, GameObject.GameObject.RED_RING,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(4, 7), i, GameObject.GameObject.BLUE_BEACON,
+                                Direction.Direction.NORTH_EAST)
 
             elif template == 14:
                 # template number 14
@@ -357,14 +359,14 @@ class Board:
                 self.put_wall(Coord.Coord(0, 2), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 3), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.BLUE_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.GREEN_BALL,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(3, 4), i, GameObject.GameObject.RED_BEACON,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(5, 6), i, GameObject.GameObject.YELLOW_RING,
-                                                          Direction.Direction.NORTH_WEST))
+                self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.BLUE_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(2, 4), i, GameObject.GameObject.GREEN_BALL,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(3, 4), i, GameObject.GameObject.RED_BEACON,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(5, 6), i, GameObject.GameObject.YELLOW_RING,
+                                Direction.Direction.NORTH_WEST)
 
             elif template == 15:
                 # template number 15
@@ -374,17 +376,20 @@ class Board:
                 self.put_wall(Coord.Coord(0, 6), Direction.Direction.SOUTH, i)
                 self.put_wall(Coord.Coord(0, 7), Direction.Direction.NORTH, i)
 
-                possible_objective.append(self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.YELLOW_BEACON,
-                                                          Direction.Direction.NORTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(2, 3), i, GameObject.GameObject.BLUE_BALL,
-                                                          Direction.Direction.NORTH_EAST))
-                possible_objective.append(self.put_object(Coord.Coord(3, 3), i, GameObject.GameObject.GREEN_RING,
-                                                          Direction.Direction.SOUTH_WEST))
-                possible_objective.append(self.put_object(Coord.Coord(1, 5), i, GameObject.GameObject.RED_COIN,
-                                                          Direction.Direction.SOUTH_EAST))
-                possible_objective.append(
-                    self.put_object(Coord.Coord(5, 7), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST))
+                self.put_object(Coord.Coord(6, 2), i, GameObject.GameObject.YELLOW_BEACON,
+                                Direction.Direction.NORTH_WEST)
+                self.put_object(Coord.Coord(2, 3), i, GameObject.GameObject.BLUE_BALL,
+                                Direction.Direction.NORTH_EAST)
+                self.put_object(Coord.Coord(3, 3), i, GameObject.GameObject.GREEN_RING,
+                                Direction.Direction.SOUTH_WEST)
+                self.put_object(Coord.Coord(1, 5), i, GameObject.GameObject.RED_COIN,
+                                Direction.Direction.SOUTH_EAST)
+                self.put_object(Coord.Coord(5, 7), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST)
 
+        self.generate_robot()
+        self.update_destination()
+
+    def generate_robot(self):
         # create and set the position of the robot
         colors = ["Blue", "Green", "Red", "Yellow"]
         for i in range(4):
@@ -400,38 +405,38 @@ class Board:
             self._robots.append(robot)
             board_case.place_bot(robot)
 
-        # Then, we store in each case of the plate, the case accessible in 1 move
+    def update_destination(self):
+        # we store in each case of the plate, the case accessible in 1 move
         for j in range(16):
             for i in range(16):
                 if (j < 7 or j > 8) or (i < 7 or i > 8):
+                    self.case(i, j).reset_destinations()
                     destinations = self.link_case(i, j)
                     for d in destinations:
                         self._cases[i][j].add_destination(d)
 
-    # Methods to compute for each case the cases on which we can go in one move
+    def has_bot_in_dir(self, coord, direction):
+        return self.case(coord.x + Direction.get_x(direction), coord.y + Direction.get_y(direction)).has_bot()
+
+    def is_obstacle(self, coord, direction):
+        return not Coord.Coord(coord.x + Direction.get_x(direction), coord.y + Direction.get_y(direction)).is_in_map() or self.case_coord(coord).has_walls_in_dir(direction) or self.has_bot_in_dir(
+            coord, direction)
+
+        # Methods to compute for each case the cases on which we can go in one move
+
     def link_case(self, x, y):
-        directions = [
-            Direction.Direction.NORTH,
-            Direction.Direction.EAST,
-            Direction.Direction.SOUTH,
-            Direction.Direction.WEST,
-        ]
         can_go = []
 
-        for direction in directions:
+        for direction in Direction.get_ordinal_direction_list():
             actual_x = x
             actual_y = y
+            actual_coord = Coord.Coord(actual_x, actual_y)
             # While the actual case has no wall in the direction we follow
-            while not self._cases[actual_x][actual_y].has_walls_in_dir(direction):
-                # If the next case has a bot, we stop
-                if (self.case(actual_x, actual_y).has_walls_in_dir(direction) and
-                        self._cases[actual_x + Direction.get_x(direction)][
-                        actual_y + Direction.get_y(direction)
-                        ].has_bot()):
-                    break
+            while not self.is_obstacle(actual_coord, direction):
                 # If there is no obstacle, we increase the test coordinates, and we loop
                 actual_x += Direction.get_x(direction)
                 actual_y += Direction.get_y(direction)
+                actual_coord = Coord.Coord(actual_x, actual_y)
 
             # When we exit the loop, we create a new destination with the last test coordinates
             can_go.append(Destination.Destination(direction, self._cases[actual_x][actual_y]))
@@ -439,10 +444,10 @@ class Board:
         return can_go
 
     def find_game_object(self, game_object):
-        for i in range(16):
-            for j in range(16):
+        for j in range(16):
+            for i in range(16):
                 if self._cases[i][j].game_object() == game_object:
-                    return Coord.Coord(j, i)
+                    return Coord.Coord(i, j)
         return None
 
     # Methods to compute for each case the cases on which we can go in one move
@@ -509,7 +514,7 @@ class Board:
             self.put_wall(Coord.Coord(coord.x - 1, coord.y), Direction.Direction.EAST, rotation)
             self.put_wall(coord, Direction.Direction.WEST, rotation)
 
-        return Objective.Objective(coord, obj)
+        return Objective.Objective(new_cord, obj)
 
     # Method that check in a radius of one around de given coordinates if there is another object
     def is_nearby(self, x, y):
@@ -543,7 +548,9 @@ class Board:
             else:
                 continue
             break
+        self.update_destination()
 
+    # depreciated
     # Method to move a bot after finding a valid place
     def move_valid_bot(self, robot, direction):
         s = PathSolver.PathSolver(None, None, self)
@@ -600,10 +607,8 @@ class Board:
                         self._cases[robot.start_pos.x][robot.start_pos.y].place_bot(robot)
                         self._cases[i][j].remove_bot()
 
-    def can_go_to_case(self, x_to_reach, y_to_reach, robot):
-        for d in self._cases[robot.pos.x,robot.pos.y].destination.case:
+    """def can_go_to_case(self, x_to_reach, y_to_reach, robot):
+        for d in self._cases[robot.pos.x, robot.pos.y].destination.case:
             if d.pos.x == x_to_reach and d.pos.y == y_to_reach:
                 return True
-        return False
-
-
+        return False"""
