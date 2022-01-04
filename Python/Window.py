@@ -75,6 +75,7 @@ class Window:
         self.Y_robot = None
         self._coups = 0
         self._coupsSolve = 0
+        self._solFind = False
         self.IMG_Objective = canvas2.create_image(170, 250)
         self.lines = []
         Window.define_objective(self)
@@ -267,7 +268,7 @@ class Window:
                                 anchor="center")
 
     def move_n(self):
-        if self._color is not None:
+        if self._color is not None and self._solFind is False:
             Window.add_coup(self)
             cord = self._board.case(self._board.robot(self._color).pos.x,
                                     self._board.robot(self._color).pos.y).destination(
@@ -285,9 +286,10 @@ class Window:
             if self._color == "Yellow":
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
+            Window.sol_find(self)
 
     def move_s(self):
-        if self._color is not None:
+        if self._color is not None and self._solFind is False:
             Window.add_coup(self)
             cord = self._board.case(self._board.robot(self._color).pos.x,
                                     self._board.robot(self._color).pos.y).destination(
@@ -305,9 +307,10 @@ class Window:
             if self._color == "Yellow":
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
+            Window.sol_find(self)
 
     def move_e(self):
-        if self._color is not None:
+        if self._color is not None and self._solFind is False:
             Window.add_coup(self)
             cord = self._board.case(self._board.robot(self._color).pos.x,
                                     self._board.robot(self._color).pos.y).destination(
@@ -325,9 +328,10 @@ class Window:
             if self._color == "Yellow":
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
+            Window.sol_find(self)
 
     def move_w(self):
-        if self._color is not None:
+        if self._color is not None and self._solFind is False:
             Window.add_coup(self)
             cord = self._board.case(self._board.robot(self._color).pos.x,
                                     self._board.robot(self._color).pos.y).destination(
@@ -345,6 +349,7 @@ class Window:
             if self._color == "Yellow":
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
+            Window.sol_find(self)
 
     def pick_r(self):
         self._color = "Red"
@@ -376,8 +381,8 @@ class Window:
     def resolve(self):
         ai = AI.AI(self._board)
         ai.solve()
-        print(ai.solution)
-        if ai.solution[0] is not None:
+
+        if ai.solution[0] is not None and self._solFind is False:
             Window.add_coup(self)
             col = ai.solution[0].robot_color  # récupère la couleur du robot à jouer
             dest = ai.solution[0].direction  # récupère la destination à appliquer
@@ -399,11 +404,13 @@ class Window:
             if col == "Yellow":
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
+            Window.sol_find(self)
 
     def resolve_all(self):
         ai = AI.AI(self._board)
         ai.solve()
-        if ai.solution[0] is not None:
+
+        if ai.solution[0] is not None and self._solFind is False:
             Window.add_coup(self)
             col = ai.solution[0].robot_color  # récupère la couleur du robot à jouer
             dest = ai.solution[0].direction  # récupère la destination à appliquer
@@ -425,12 +432,16 @@ class Window:
             if col == "Yellow":
                 canvas.coords(self.Y_robot, cord.x * img_size + img_size / 2 + decal,
                               cord.y * img_size + img_size / 2 + decal)
+            Window.sol_find(self)
             Window.resolve_all(self)
             Window.add_coups_sol(self)
+
 
     def reset(self):
         Window.supp_lines(self)
         Window.supp_coups_sol(self)
+        Window.supp_coup(self)
+        self._solFind = False
         self._board.reset_bot()
         x = self._board.robot("Red").pos.x
         y = self._board.robot("Red").pos.y
@@ -467,13 +478,21 @@ class Window:
         self._coups = self._coups + 1
         LCoups.config(text="Nombre de coups joués : " + str(self._coups))
 
+    def supp_coup(self):
+        self._coups = 0
+        LCoups.config(text="Nombre de coups joués : " + str(self._coups))
+
     def add_coups_sol(self):
         self._coupsSolve = self._coupsSolve + 1
-        LNbCoups.config(text="solution possible en :\n" + str(self._coupsSolve) + " coups")
+        LNbCoups.config(text="solution trouvée en :\n" + str(self._coups) + " coups")
 
     def supp_coups_sol(self):
         self._coupsSolve = 0
         LNbCoups.config(text="")
+
+    def sol_find(self):
+        ai = AI.AI(self._board)
+        self._solFind = ai.is_solution_find()
 
     def button_config(self):
         BNorth.config(command=self.move_n)
