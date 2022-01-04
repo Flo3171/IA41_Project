@@ -49,10 +49,10 @@ class Board:
     def target_robot(self):
         return self._target_robot
 
-    def choose_objective(self):
+    def choose_objective(self, game_object):
         # set the objective to reach with the robot
-
-        game_object = random.choice(list(GameObject.GameObject))
+        if game_object is None:
+            game_object = random.choice(list(GameObject.GameObject))
         while game_object == GameObject.GameObject.VORTEX:
             game_object = random.choice(list(GameObject.GameObject))
         self._objective = Objective.Objective(self.find_game_object(game_object), game_object)
@@ -76,9 +76,14 @@ class Board:
                 self._target_robot = self._robots[i]
 
     def generate_board(self):
+        self.generate_default_wall()
+        self.generate_template(False)
+        self.generate_robot()
+        self.update_destination()
+
+    def generate_default_wall(self):
 
         for j in range(16):
-
             # put the wall around the map
             self._cases[j][0].add_wall(Wall.Wall(Direction.Direction.NORTH))
             self._cases[0][j].add_wall(Wall.Wall(Direction.Direction.WEST))
@@ -99,14 +104,18 @@ class Board:
                     elif i == 9:
                         self._cases[9][j].add_wall(Wall.Wall(Direction.Direction.WEST))
 
+    def generate_template(self, fix):
+
         available_quarter = [True, True, True, True]
         # put one template on each quarter map
         for i in range(4):
 
-            template = i  # random.randint(0, 15)
-
-            """while not available_quarter[template % 4]:
-                template = random.randint(0, 15)"""
+            if fix:
+                template = i
+            else:
+                template = random.randint(0, 15)
+                while not available_quarter[template % 4]:
+                    template = random.randint(0, 15)
 
             available_quarter[template % 4] = False
 
@@ -385,9 +394,6 @@ class Board:
                 self.put_object(Coord.Coord(1, 5), i, GameObject.GameObject.RED_COIN,
                                 Direction.Direction.SOUTH_EAST)
                 self.put_object(Coord.Coord(5, 7), i, GameObject.GameObject.VORTEX, Direction.Direction.SOUTH_EAST)
-
-        self.generate_robot()
-        self.update_destination()
 
     def generate_robot(self):
         # create and set the position of the robot

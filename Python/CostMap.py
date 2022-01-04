@@ -1,6 +1,7 @@
 import Direction
 import Coord
 
+
 class CostMap:
 
     def __init__(self, board):
@@ -75,21 +76,30 @@ class CostMap:
 
     def update_cost_map(self):
         self.update_cost(self.objective.coord, 0)
-        self._cost = self.next_state(0, self.objective.coord)
+        self.next_state(0, self.objective.coord)
+
+    def is_target_robot_coord(self, coord):
+        return coord.is_in_map() \
+               and self.board.case_coord(coord).has_bot() \
+               and self.board.case_coord(coord).bot.pos.x == self.target_robot.pos.x \
+               and self.board.case_coord(coord).bot.pos.y == self.target_robot.pos.y
 
     def next_state(self, cost, coord_starting):
-        print(self)
+
+        #print(self)
         if self.is_robot_reach():
             self._cost = self.matrix_coord(self.target_robot.pos)
 
-        elif self.board.case_coord(coord_starting).has_walls():
+        else:
+            next_cases = []
             for direction in Direction.get_ordinal_direction_list():
-                if self.board.case_coord(coord_starting).has_walls_in_dir(direction):
+                if self.board.case_coord(coord_starting).has_walls_in_dir(direction) or self.board.has_bot_in_dir(coord_starting, direction):
                     opposite_direction = Direction.get_opposite(direction)
                     next_coord = coord_starting
-                    while not self.board.is_obstacle(coord_starting, opposite_direction):
+                    while (not self.board.is_obstacle(next_coord, opposite_direction)) or self.is_target_robot_coord(next_coord.add_direction(opposite_direction)):
                         next_coord = next_coord.add_direction(opposite_direction)
                         if self.update_cost(next_coord, cost + 1):
-                            self.next_state(cost + 1, next_coord)
+                            next_cases.append(next_coord)
 
-
+                for coord in next_cases:
+                    self.next_state(cost + 1, coord)
